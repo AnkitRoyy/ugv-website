@@ -105,7 +105,7 @@ function Footer() {
 
         <div className="footer-right">
           <div className="footer-contact">
-            <span>📞 +91 7307140847</span>
+            <span>📞 +91 9993400267</span>
             <span>✉️ ugv@dtu.ac.in</span>
           </div>
 
@@ -129,9 +129,9 @@ function Footer() {
       </div>
 
       <div className="footer-bottom">
-        WT-2, Wind Tunnel · Delhi Technological University · Delhi – 110042
+        WT-3 and 4, Wind Tunnel · Delhi Technological University · Delhi – 110042
         <br />
-        © {new Date().getFullYear()} UGV Tech Team
+        © {new Date().getFullYear()} UGV-DTU. All rights reserved.
       </div>
 
       <div className="footer-credit">

@@ -120,7 +120,7 @@ function About() {
                 <span className="location-label">LAB ADDRESS</span>
                 <p className="location-address">
                   <strong>UGV-DTU</strong><br />
-                  WT-2, Wind Tunnel,<br />
+                  WT-3 and 4, Wind Tunnel,<br />
                   Delhi Technological University,<br />
                   Shahbad Daulatpur, Rohini, Delhi - 110042
                 </p>
@@ -129,7 +129,7 @@ function About() {
             <div className="about-map-container">
               <iframe
                 title="UGV DTU Lab Location"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3497.625345758364!2d77.1152438!3d28.7531847!2m3!1f0!2f0!3f0!3m2!1i1024!2i766!4f13.1!3m3!1m2!1s0x390d01000f8547e3%3A0xcc53ac96d8950ab4!2sUGV-DTU!5e0!3m2!1sen!2sin!4v1719600000000!5m2!1sen!2sin"
+                src="https://maps.google.com/maps?q=28.750860325600357,77.11496567550515&z=17&output=embed"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

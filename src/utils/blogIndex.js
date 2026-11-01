@@ -5,7 +5,7 @@ const blogIndex = [
     excerpt:
       "How we structured perception, planning and control for a real-world UGV using ROS 2.",
     category: "ROS2",
-    author: "UGV Tech Team",
+    author: "UGV-DTU",
     date: "Sept 2025",
     file: "/blogs/first-blog.md",
   },
@@ -15,7 +15,7 @@ const blogIndex = [
     excerpt:
       "Showcasing Valkyrie and UGV Ashwini at Open House 2025—where engineering meets real-world application.",
     category: "Events & Outreach",
-    author: "UGV Tech Team",
+    author: "UGV-DTU",
     date: "Nov 2025",
     file: "/blogs/open-house-2025.md",
   },
@@ -25,7 +25,7 @@ const blogIndex = [
     excerpt:
       "Breaking down sensors, vision pipelines and data fusion for ISDC 2026.",
     category: "AI / ML",
-    author: "UGV Tech Team",
+    author: "UGV-DTU",
     date: "Dec 2025",
     file: "/blogs/perception-system-of-valkyrie.md",
   },
@@ -35,7 +35,7 @@ const blogIndex = [
     excerpt:
       "A three-day robotics outreach program by Team UGV-DTU at GGSSS Siraspur, introducing students to mechatronics, programming, and inclusive STEM education through hands-on learning and mentorship.",
     category: "Events & Outreach",
-    author: "UGV Tech Team",
+    author: "UGV-DTU",
     date: "Dec 2025",
     file: "/blogs/school-outreach-program.md",
   },
