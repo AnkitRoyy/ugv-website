@@ -313,35 +313,12 @@ export const DEPARTMENTS = {
       linkedin: "#",
     },
     {
-      name: "Dhairya Aneja",
-      role: "Member",
-      image: dhairyaAnejaImg,
-      github: "https://github.com/programmingf1sh",
-      instagram: "https://www.instagram.com/dhairyaaaaaaaaaaaaaaaaa",
-      linkedin: "https://www.linkedin.com/in/dhairya-aneja/",
-    },
-    {
       name: "Tanishq Khandelwal",
       role: "Member",
       image: tanishqKhandelwalImg,
       github: "https://github.com/tanishqgiant",
       instagram: "https://www.instagram.com/tanishq_k05",
       linkedin: "https://www.linkedin.com/in/tanishq-khandelwal-9304b2434/",
-    },
-    {
-      name: "Dhruv Rastogi",
-      role: "Member",
-      image: dhruvRastogiImg,
-      github: "https://github.com/JQzinc",
-      instagram: "https://www.instagram.com/dhruv.r029",
-      linkedin: "#",
-    },
-    {
-      name: "Aryan Munjal",
-      role: "Member",
-      image: aryanMunjalImg,
-      instagram: "#",
-      linkedin: "#",
     },
     {
       name: "Lakshaya Verma",
@@ -393,11 +370,6 @@ export const DEPARTMENTS = {
       linkedin: "https://www.linkedin.com/in/omi-shourya-4b8a6b302",
       instagram: "https://www.instagram.com/Astro_omi/",
     },
-    {
-      name: "Bhavya Garg",
-      role: "Member",
-      image: bhavyaGargImg,
-    },
   ]),
   Mechanical: sortMembers([
     {
@@ -421,22 +393,6 @@ export const DEPARTMENTS = {
       github: "https://github.com/nottodayas2024-arch",
       instagram: "https://www.instagram.com/iamjustashishboi",
       linkedin: "https://www.linkedin.com/in/ashish-pbhatt-427345427",
-    },
-    {
-      name: "Himanshu Prajapati",
-      role: "Member",
-      image: himanshuPrajapatiImg,
-      github: "https://github.com/himanshuprajapati-dtu",
-      instagram: "https://www.instagram.com/himanshu_fe26",
-      linkedin: "https://www.linkedin.com/in/himanshu-prajapati-a5a47b434",
-    },
-    {
-      name: "Abhinav Agarwal",
-      role: "Member",
-      image: abhinavAgarwalImg,
-      github: "https://github.com/abhinavagr-mec",
-      instagram: "https://www.instagram.com/abhinavagr27",
-      linkedin: "https://www.linkedin.com/in/abhinav-agarwal-590495434/",
     },
     {
       name: "Sameer Tandon",
@@ -473,13 +429,6 @@ export const DEPARTMENTS = {
       image: aarnavKansalImg,
       instagram: "https://www.instagram.com/theredhairbilla",
       linkedin: "https://www.linkedin.com/in/aarnav-kansal-374399425",
-    },
-    {
-      name: "Ishaan Yadav",
-      role: "Member",
-      image: ishaanYadavImg,
-      instagram: "https://www.instagram.com/ishaanyadav_07",
-      linkedin: "#",
     },
   ]),
   "Research and Outreach": sortMembers([
