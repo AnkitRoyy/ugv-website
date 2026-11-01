@@ -199,8 +199,8 @@ export const DEPARTMENTS = {
       role: "Member",
       image: preetBislaImg,
       github: "https://github.com/kavishusesthis",
-      instagram: "https://www.instagram.com/k4vishwashere",
-      linkedin: "#",
+      instagram: "https://www.instagram.com/kaviscx",
+      linkedin: "https://www.linkedin.com/in/preet-bisla-24b875441"
     },
     {
       name: "Akash Sheejith",
