@@ -19,19 +19,23 @@ import nav from '../engines/nav';
 // because it reads the DOM the other engines fill in.
 export default function useSiteEngines() {
   useEffect(() => {
-    installAnchorGlide();
-    world();
-    brandIntro();
-    typing();
-    heroUgv();
-    heroStats();
-    showcase();
-    fleet();
-    teams();
-    achievements();
-    research();
-    gallery();
-    router();
-    nav();
+    // each engine is isolated so one failure (e.g. no WebGL) cannot stop the rest
+    const safely = (name, fn) => {
+      try { fn(); } catch (err) { console.error(`[engine:${name}]`, err); }
+    };
+    safely('anchors', installAnchorGlide);
+    safely('world', world);
+    safely('brandIntro', brandIntro);
+    safely('typing', typing);
+    safely('heroUgv', heroUgv);
+    safely('heroStats', heroStats);
+    safely('showcase', showcase);
+    safely('fleet', fleet);
+    safely('teams', teams);
+    safely('achievements', achievements);
+    safely('research', research);
+    safely('gallery', gallery);
+    safely('router', router);
+    safely('nav', nav);
   }, []);
 }
