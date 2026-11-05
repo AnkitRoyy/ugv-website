@@ -8,6 +8,9 @@ import heroStats from '../engines/heroStats';
 import showcase from '../engines/showcase';
 import fleet from '../engines/fleet';
 import teams from '../engines/teams';
+import achievements from '../engines/achievements';
+import research from '../engines/research';
+import gallery from '../engines/gallery';
 import router from '../engines/router';
 import nav from '../engines/nav';
 
@@ -25,6 +28,9 @@ export default function useSiteEngines() {
     showcase();
     fleet();
     teams();
+    achievements();
+    research();
+    gallery();
     router();
     nav();
   }, []);

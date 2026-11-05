@@ -1,21 +1,29 @@
-export const RS=[
-{id:'slam-unstructured-roads',tag:'SLAM · Mapping',title:'Mapping unstructured Indian roads with SLAM',summary:'How the team builds real-time maps where lanes, kerbs and traffic do not follow a fixed pattern.',body:[
-'Most published SLAM benchmarks assume clear lane markings, predictable traffic and well-kept road edges. Indian roads rarely offer that. Mixed traffic, parked vehicles, potholes and changing surfaces mean the map has to be built from whatever structure the scene actually provides.',
-'UGV-DTU’s approach combines LiDAR scans with stereo camera data inside the ROS 2 stack, so that the vehicle can build a map and localise itself against it at the same time. The map is used by the planner as the vehicle moves, instead of being prepared in advance.',
-'Current work focuses on keeping the map consistent when the scene changes quickly, and on recovering the vehicle’s position when parts of the environment look alike or disappear from view.',
-'Placeholder article — replace this text with the team’s full write-up, figures and references.']},
-{id:'ekf-sensor-fusion',tag:'Localization · Fusion',title:'Sensor fusion with an EKF: LiDAR, IMU and GPS/RTK',summary:'Combining sensors with different strengths into one reliable estimate of where the vehicle is.',body:[
-'No single sensor is reliable everywhere. GPS/RTK is precise in open sky but degrades near buildings and trees. An IMU responds instantly but drifts over time. LiDAR and cameras describe the surroundings well but depend on what is in view.',
-'The team uses an Extended Kalman Filter to fuse these sources into a single pose estimate. Each sensor contributes where it is strongest, and the filter weighs it down when its readings become uncertain.',
-'The same estimate feeds the navigation stack, so path planning and control work from one consistent view of the vehicle’s position and motion.',
-'Placeholder article — replace this text with the team’s full write-up, figures and references.']},
-{id:'lane-obstacle-perception',tag:'Perception · Computer Vision',title:'Lane and obstacle perception without lane discipline',summary:'Custom vision pipelines for roads where markings fade and obstacles appear without warning.',body:[
-'Lane detection methods built for highways with clear paint struggle on roads where markings are worn, missing or ignored by traffic. Obstacles range from pedestrians and animals to carts and debris.',
-'UGV-DTU develops its own computer vision pipelines for lane detection and obstacle recognition, designed around the conditions the vehicle actually meets, and tested on the team’s own platforms.',
-'The perception output is combined with LiDAR data so that the planner has more than one source of evidence about what is drivable.',
-'Placeholder article — replace this text with the team’s full write-up, figures and references.']},
-{id:'nav2-path-planning',tag:'Planning · Navigation',title:'Path planning with Nav2 on a custom platform',summary:'Adapting a standard navigation framework to a vehicle that was built from scratch.',body:[
-'Nav2 provides a proven structure for planning and control, but it must be tuned to the vehicle it drives. The team’s platforms have their own chassis, drivetrain and turning behaviour.',
-'The work covers cost maps that reflect real road conditions, planners that respect the vehicle’s motion limits, and recovery behaviours for when the vehicle gets stuck or the path is blocked.',
-'Placeholder article — replace this text with the team’s full write-up, figures and references.']}
+// Published papers, carried over from the existing site.
+export const RS = [
+  {
+    "id": "agni",
+    "tag": "ICCE · 2026",
+    "title": "AGNI: Adaptive Sensor Fusion and Terrain-Aware Navigation for Autonomous Ground Vehicles",
+    "summary": "AGNI (Autonomous Ground-Based Navigation Inspector) is an autonomous ground vehicle designed for reliable operation in unstructured and GPS-denied environments.",
+    "body": [
+      "AGNI (Autonomous Ground-Based Navigation Inspector) is an autonomous ground vehicle designed for reliable operation in unstructured and GPS-denied environments. The robot employs a custom inverted V suspension system inspired by rocker-bogie designs for superior terrain adaptability. To achieve robust localization and navigation, AGNI integrates a Hybrid Confidence Adaptive Sensor Fusion (HCAF) mechanism that dynamically prioritizes sensor data based on real-time reliability scores. The system combines LiDAR, stereo vision camera, GPS-IMU (Used together for position estimation), and wheel encoders. Real-time obstacle avoidance is handled using the Dynamic Window Approach (DWA) along with Hybrid Confidence Adaptive Sensor Fusion and YOLO-based object detection. This paper presents the mechanical design, sensor fusion strategy, path planning algorithms, and experimental validation of AGNI in challenging terrains."
+    ],
+    "authors": "Lakshay, Vedant Singh, Yuvraj Gupta, Akshat Rajwansh, S Indu",
+    "venue": "2026 IEEE International Conference on Consumer Electronics (ICCE)",
+    "year": "2026",
+    "link": "https://ieeexplore.ieee.org/document/11449757"
+  },
+  {
+    "id": "power-distribution-and-logic-control-board-for-autonomous-ugvs",
+    "tag": "PCBWay Sponsor Project · 2026",
+    "title": "Power Distribution and Logic Control Board for Autonomous UGVs",
+    "summary": "Modern autonomous robotic systems and unmanned ground vehicles (UGVs) demand an electronics architecture capable of handling two fundamentally different engineering requirements simultaneously: high-current power distribution for locomotion and stable, low-noise logic power for computational nodes.",
+    "body": [
+      "Modern autonomous robotic systems and unmanned ground vehicles (UGVs) demand an electronics architecture capable of handling two fundamentally different engineering requirements simultaneously: high-current power distribution for locomotion and stable, low-noise logic power for computational nodes. This board bridges that gap by integrating robust power distribution lines with precise logic control microelectronics to ensure safe, stable, and efficient operation of UGV systems in the field."
+    ],
+    "authors": "UGV Tech Team, DTU",
+    "venue": "PCBWay Sponsor Project",
+    "year": "2026",
+    "link": "https://www.pcbway.com/project/sponsor/Power_Distribution_and_Logic_Control_Board_a1d3eec6.html"
+  }
 ];

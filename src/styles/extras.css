@@ -87,3 +87,9 @@ html:not([data-theme="light"]) .page-head h1{text-shadow:none}
 .card .ph.has-img::before,.card .ph.has-img::after{display:none}
 .card .ph.has-img{background:var(--raised)}
 .card .ph img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;pointer-events:none}
+
+/* sponsor logos and markdown articles */
+.sponsor-logo img{max-width:100%;max-height:100%;object-fit:contain}
+.blog-md img{max-width:100%;height:auto}
+.blog-md h2,.blog-md h3{margin:1.6em 0 .6em}
+.blog-md ul,.blog-md ol{padding-left:1.3em}

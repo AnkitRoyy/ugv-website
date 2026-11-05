@@ -3,6 +3,7 @@ import { glide, cancelGlide } from '../lib/motion';
 import { card, tilt } from '../lib/cards';
 import { DEPTS } from '../data/people';
 import { RS } from '../data/research';
+import blogIndex from '../data/blogIndex';
 import { TMAP as TM, previewDept } from './teams';
 import { showBot } from './fleet';
 const SOLO=['ugvc','isdc','igvc'];
@@ -13,12 +14,13 @@ export function route(){const tk=document.getElementById('tk'),tt=document.getEl
   document.body.classList.remove('t','b','pg');
   document.querySelectorAll('.site-page.active').forEach(x=>x.classList.remove('active'));
   const pm=raw.match(/^papers\/([\w-]+)$/);
-  const soloId=SOLO.includes(raw)?raw:(pm&&RS.some(r=>r.id===pm[1])?'rs-'+pm[1]:'');
+  const bl=raw.match(/^blogs\/([\w-]+)$/);
+const soloId=SOLO.includes(raw)?raw:(pm&&RS.some(r=>r.id===pm[1])?'rs-'+pm[1]:(bl&&blogIndex.some(b=>b.slug===bl[1])?'blog-'+bl[1]:''));
   const soloEl=soloId&&document.getElementById(soloId);
   if(soloEl){
     soloEl.classList.add('active');
     document.body.classList.add('pg');
-    document.body.dataset.pg=pm?'papers':raw;
+    document.body.dataset.pg=pm?'papers':bl?'blogs':raw;
     cancelGlide();
     scrollTo({top:0,behavior:'instant'});
   }else if(bm){
