@@ -1,35 +1,28 @@
-import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import './styles/base.css';
+import './styles/sections.css';
+import './styles/pages.css';
+import './styles/extras.css';
 
+import useTheme from './hooks/useTheme';
+import useLandingEngines from './hooks/useLandingEngines';
+import DeptTransition from './components/layout/DeptTransition';
+import BackgroundLayers from './components/layout/BackgroundLayers';
+import Navbar from './components/layout/Navbar';
+import Hero from './components/hero/Hero';
+import Footer from './components/layout/Footer';
 
-import Navbar from "./components/Navbar";
-
-import Home from "./pages/Home";
-import UGVC from "./pages/UGVC";
-import ISDC from "./pages/ISDC";
-import IGVC from "./pages/IGVC";
-import Blogs from "./pages/Blogs";
-import BlogPost from "./pages/BlogPost";
-import Footer from "./components/Footer";
-import ScrollToTop from "./utils/ScrollToTop";
-
-function App() {
+export default function App() {
+  const [light, toggleTheme] = useTheme();
+  useLandingEngines();
   return (
-    <BrowserRouter>
-      <ScrollToTop/>
-
-      <Navbar/>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/ugvc" element={<UGVC />} />
-        <Route path="/isdc" element={<ISDC />} />
-        <Route path="/igvc" element={<IGVC />} />
-        <Route path="/blogs" element={<Blogs />} />
-        <Route path="/blogs/:slug" element={<BlogPost />} />
-      </Routes>
+    <>
+      <DeptTransition />
+      <BackgroundLayers />
+      <Navbar light={light} onToggleTheme={toggleTheme} />
+      <main>
+        <Hero />
+      </main>
       <Footer />
-    </BrowserRouter>
+    </>
   );
 }
-
-export default App;
