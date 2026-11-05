@@ -1,0 +1,4 @@
+export const PR=[
+{k:'01 — IGVC 2025 · AutoNav',t:'ASHWINI',d:'A compact three-wheeled differential-drive vehicle on a 3030 aluminium T-slot chassis. RPLiDAR A3M1, Intel RealSense D455 and RTK GPS run on ROS Noetic, with a LoRa wireless e-stop that reaches 1 km.',s:['Top speed — 5 mph','Ramps — up to 16°','Stack — ROS Noetic · EKF · move_base']},
+{k:'02 — IGVC 2023 · Oakland University',t:'IGVC 2023 platform',d:'The team’s previous competition vehicle, taken to Michigan in June 2023. It placed third in the Cyber Challenge and third in the Group A Design Competition.',s:['Cyber Challenge — 3rd','Group A Design — 3rd','Venue — Oakland University, USA']},
+{k:'03 — MathWorks Minidrone 2021 · EMEA',t:'Minidrone line follower',d:'A line-following algorithm modelled in Simulink and deployed on a Parrot Mambo minidrone as the team’s entry to the MathWorks Minidrone Competition.',s:['Tooling — Simulink','Hardware — Parrot Mambo','Region — EMEA']}];

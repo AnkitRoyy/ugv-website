@@ -12,10 +12,12 @@ class LegacyPointLight extends T.PointLight {
   constructor(c, i, d) { super(c, (i ?? 1) * Math.PI, d, 1); }
 }
 
-export default {
+const legacyThree = {
   ...T,
   WebGLRenderer: LegacyRenderer,
   AmbientLight: lit(T.AmbientLight),
   DirectionalLight: lit(T.DirectionalLight),
   PointLight: LegacyPointLight,
 };
+
+export default legacyThree;
