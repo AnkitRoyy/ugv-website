@@ -2,9 +2,11 @@ import './styles/base.css';
 import './styles/sections.css';
 import './styles/pages.css';
 import './styles/extras.css';
+import './styles/polish.css';
 
 import useTheme from './hooks/useTheme';
 import useSiteEngines from './hooks/useSiteEngines';
+import useScrollReveal from './hooks/useScrollReveal';
 import DeptTransition from './components/layout/DeptTransition';
 import BackgroundLayers from './components/layout/BackgroundLayers';
 import Navbar from './components/layout/Navbar';
@@ -32,6 +34,7 @@ import Footer from './components/layout/Footer';
 export default function App() {
   const [light, toggleTheme] = useTheme();
   useSiteEngines();
+  useScrollReveal();
   return (
     <>
       <DeptTransition />

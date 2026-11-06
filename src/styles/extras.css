@@ -103,3 +103,10 @@ html:not([data-theme="light"]) .page-head h1{text-shadow:none}
 .sponsor-tile small{display:block;text-align:center;font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--t3)}
 [data-theme="light"] .sponsor-logo{background:#fff;border:1px solid var(--b2)}
 @media(max-width:700px){.sponsor-grid{gap:10px}.sponsor-tile{flex-basis:calc(50% - 5px);min-width:0;padding:8px;border-radius:14px}.sponsor-logo{height:84px;padding:12px 14px}}
+
+/* social links on person cards */
+.card .soc{position:absolute;top:10px;right:10px;z-index:3;display:flex;gap:6px;opacity:0;transform:translateY(-6px);transition:opacity .3s ease,transform .4s cubic-bezier(.2,.7,.2,1)}
+.card:hover .soc,.card:focus-within .soc{opacity:1;transform:none}
+.card .soc a{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:rgba(10,10,12,.72);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.22);color:#fff;transition:background-color .25s,border-color .25s,transform .3s cubic-bezier(.2,.7,.2,1)}
+.card .soc a:hover{background:#ff6a2b;border-color:#ff6a2b;transform:translateY(-2px) scale(1.06)}
+@media(hover:none){.card .soc{opacity:1;transform:none}}

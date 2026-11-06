@@ -2,69 +2,43 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { VISUALS } from '../../data/visuals';
 import './Visuals.css';
 
+const N = VISUALS.length;
+const STEP_MS = 5600;
 const pad = (n) => String(n).padStart(2, '0');
 
-function Lightbox({ index, onClose, onStep }) {
-  const startX = useRef(null);
-  const v = VISUALS[index];
-
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === 'Escape') onClose();
-      else if (e.key === 'ArrowRight') onStep(1);
-      else if (e.key === 'ArrowLeft') onStep(-1);
-    };
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    window.addEventListener('keydown', onKey);
-    return () => {
-      document.body.style.overflow = prev;
-      window.removeEventListener('keydown', onKey);
-    };
-  }, [onClose, onStep]);
-
-  return (
-    <div
-      className="vlb"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Photo viewer"
-      onClick={(e) => e.target === e.currentTarget && onClose()}
-      onPointerDown={(e) => { startX.current = e.clientX; }}
-      onPointerUp={(e) => {
-        if (startX.current === null) return;
-        const dx = e.clientX - startX.current;
-        startX.current = null;
-        if (Math.abs(dx) > 50) onStep(dx < 0 ? 1 : -1);
-      }}
-    >
-      <img key={v.src} src={v.src} alt={v.cap} draggable="false" />
-      <div className="vlb-bar mono"><span>{v.cap}</span><span>{pad(index + 1)} / {pad(VISUALS.length)}</span></div>
-      <button type="button" className="vlb-x" aria-label="Close" onClick={onClose}>×</button>
-      <button type="button" className="vlb-nav prev" aria-label="Previous photo" onClick={() => onStep(-1)}>‹</button>
-      <button type="button" className="vlb-nav next" aria-label="Next photo" onClick={() => onStep(1)}>›</button>
-    </div>
-  );
-}
-
+// Compact slideshow: one stage + a single scrolling thumbnail row. Autoplays only while it is
+// on screen and not hovered, and respects reduced motion.
 export default function Visuals() {
-  const [open, setOpen] = useState(-1);
-  const gridRef = useRef(null);
-  const trigger = useRef(null);
+  const [i, setI] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [hover, setHover] = useState(false);
+  const [onScreen, setOnScreen] = useState(false);
+  const [seen, setSeen] = useState(() => new Set([0, 1]));
+  const root = useRef(null);
+  const strip = useRef(null);
+  const startX = useRef(null);
+  const reduce = useRef(typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
-  // staggered reveal as tiles enter the viewport
+  const go = useCallback((n) => setI(((n % N) + N) % N), []);
+
   useEffect(() => {
-    const tiles = [...gridRef.current.querySelectorAll('.vtile')];
-    if (!('IntersectionObserver' in window)) { tiles.forEach((t) => t.classList.add('in')); return undefined; }
-    const io = new IntersectionObserver((es) => es.forEach((e) => {
-      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-    }), { rootMargin: '0px 0px -8% 0px' });
-    tiles.forEach((t) => io.observe(t));
+    const io = new IntersectionObserver(([e]) => setOnScreen(e.isIntersecting), { threshold: 0.25 });
+    io.observe(root.current);
     return () => io.disconnect();
   }, []);
 
-  const step = useCallback((d) => setOpen((i) => (i + d + VISUALS.length) % VISUALS.length), []);
-  const close = useCallback(() => { setOpen(-1); trigger.current?.focus(); }, []);
+  useEffect(() => {
+    setSeen((s) => new Set([...s, i, (i + 1) % N, (i + N - 1) % N]));
+    const el = strip.current?.children[i];
+    if (el) strip.current.scrollTo({ left: el.offsetLeft - (strip.current.clientWidth - el.clientWidth) / 2, behavior: 'smooth' });
+  }, [i]);
+
+  const playing = !paused && !hover && onScreen && !reduce.current;
+  const onKey = (e) => {
+    if (e.key === 'ArrowRight') go(i + 1);
+    else if (e.key === 'ArrowLeft') go(i - 1);
+    else if (e.key === ' ') { e.preventDefault(); setPaused((p) => !p); }
+  };
 
   return (
     <section id="visuals" className="site-page">
@@ -73,23 +47,57 @@ export default function Visuals() {
         <h1>Moments in<br />motion.</h1>
         <p>A collection of the machines, people, workshops and competition moments behind UGV-DTU.</p>
       </div>
-      <div className="vmeta mono"><span>{pad(VISUALS.length)} photographs</span><span>Tap any photo to enlarge</span></div>
-      <div className="vmason" ref={gridRef}>
-        {VISUALS.map((v, i) => (
-          <button
-            type="button"
-            className="vtile"
-            key={v.src}
-            style={{ '--d': `${(i % 4) * 70}ms` }}
-            aria-label={`Open photo ${i + 1} of ${VISUALS.length}`}
-            onClick={(e) => { trigger.current = e.currentTarget; setOpen(i); }}
-          >
-            <img src={v.src} width={v.w} height={v.h} loading="lazy" decoding="async" alt={v.cap} />
-            <span className="vtile-n mono">{pad(i + 1)}</span>
-          </button>
-        ))}
+      <div
+        className="vs"
+        ref={root}
+        tabIndex={0}
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="Photo slideshow"
+        onKeyDown={onKey}
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+      >
+        <div
+          className="vs-stage"
+          onPointerDown={(e) => { startX.current = e.clientX; }}
+          onPointerUp={(e) => {
+            if (startX.current === null) return;
+            const dx = e.clientX - startX.current;
+            startX.current = null;
+            if (Math.abs(dx) > 45) go(i + (dx < 0 ? 1 : -1));
+          }}
+        >
+          {VISUALS.map((v, k) => (
+            <figure className={`vs-slide${k === i ? ' on' : ''}`} key={v.src} aria-hidden={k !== i}>
+              {seen.has(k) && (
+                <>
+                  <img className="vs-bg" src={v.src} alt="" aria-hidden="true" decoding="async" />
+                  <img className="vs-fg" src={v.src} alt={v.cap} decoding="async" draggable="false" />
+                </>
+              )}
+            </figure>
+          ))}
+          <div className="vs-shade" />
+          <div className="vs-ui mono">
+            <span>{VISUALS[i].cap}</span>
+            <span>{pad(i + 1)} / {pad(N)}</span>
+          </div>
+          <button type="button" className="vs-nav prev" aria-label="Previous photo" onClick={() => go(i - 1)}>‹</button>
+          <button type="button" className="vs-nav next" aria-label="Next photo" onClick={() => go(i + 1)}>›</button>
+          <button type="button" className="vs-play mono" aria-label={paused ? 'Play slideshow' : 'Pause slideshow'} onClick={() => setPaused((p) => !p)}>{paused ? '▶' : '❚❚'}</button>
+          <div className="vs-bar" aria-hidden="true">
+            <i key={i} style={{ animationDuration: `${STEP_MS}ms`, animationPlayState: playing ? 'running' : 'paused', animationName: reduce.current ? 'none' : undefined }} onAnimationEnd={() => go(i + 1)} />
+          </div>
+        </div>
+        <div className="vs-strip" ref={strip} role="tablist" aria-label="Choose a photo">
+          {VISUALS.map((v, k) => (
+            <button type="button" role="tab" aria-selected={k === i} aria-label={`Photo ${k + 1}`} className={`vs-th${k === i ? ' on' : ''}`} key={v.src} onClick={() => go(k)}>
+              <img src={v.src} alt="" loading="lazy" decoding="async" />
+            </button>
+          ))}
+        </div>
       </div>
-      {open >= 0 && <Lightbox index={open} onClose={close} onStep={step} />}
     </section>
   );
 }

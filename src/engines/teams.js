@@ -38,7 +38,7 @@ function switchDepartment(k){
 export default function teams() {
   if (window.__eng_teams) return;
   window.__eng_teams = 1;
-  document.getElementById('cc').innerHTML=LEADERSHIP.map(p=>card(p.name,p.role,'',p.image)).join('');
+  document.getElementById('cc').innerHTML=LEADERSHIP.map(p=>card(p.name,p.role,'',p.image,p)).join('');
 // department dial: hover / focus previews, click opens. On touch the first tap previews the
 // unit and a second tap on the same unit (or the roster button) opens it.
 {

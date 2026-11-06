@@ -42,7 +42,7 @@ The old site only had a name, one paragraph and photos. For **each** of Avni, As
   - Never imported: akshat, anusri, apeksha, bhuvi, dhruv, diksha, gatik, khushil_mahajan, vedant, yuvraj
 - Confirm the current council (Captain, Vice-Captain, Team Manager, Treasurer) and all department heads: names, roles, photos.
 - Confirm **who is in each department**. Software currently shows 13 members; the other departments should be checked.
-- Optional: one-line quote per council member (the design has a hover quote; we left it empty). Social links (LinkedIn/GitHub) exist in data for some people but the design does not display them. Say if you want them.
+- Optional: one-line quote per council member (the design has a hover quote; we left it empty). Social links now show on cards; any person with no icon has no link in the old data.
 - Alumni / past captains list, if wanted (not in the design).
 
 ## 4. Facts stated on the site that need verifying (P2)
@@ -81,7 +81,7 @@ Please give us **one** correct phone number, **one** workshop address, the offic
 
 - **Captions** for all 13 gallery photos (now "UGV-DTU archive · 01" etc.), ideally with year and event, and photographer credit.
 - More photos welcome (aim for 1600 px on the long edge; we optimise them).
-- 4 blog posts exist. Send new posts as Markdown plus images. Confirm author names and dates on the existing ones; consider cover images.
+- 4 blog posts exist. Send new posts as Markdown plus images. The first post (ROS 2 autonomy stack) has no image, so its card shows a plain placeholder; a cover image would help. Confirm author names (all say "UGV-DTU") and dates.
 
 ## 9. Brand and site basics (P2)
 
@@ -96,4 +96,4 @@ Please give us **one** correct phone number, **one** workshop address, the offic
 1. Show the real Avni model in the Avni vehicle page (replacing the cube)? Recommended once item 1 is supplied.
 2. Keep the blog post pages (an addition beyond the design file, needed to read the existing posts)?
 3. Keep the roster carousel the design file contains but never switches on? (We left it out.)
-4. Show social links on member cards?
+4. ~~Show social links on member cards?~~ Done. Cards now show LinkedIn / GitHub / Instagram icons from the existing data. Anyone with a missing icon has no link in the old data, so please send the missing ones.
