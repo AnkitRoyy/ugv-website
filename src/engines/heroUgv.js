@@ -44,8 +44,8 @@ const wheels=[];[[-1,1],[1,1],[-1,-1],[1,-1]].forEach(([sx,sz])=>{const w=new T.
  for(let i=0;i<14;i++){const a=i/14*6.2832;add(w,bx(.3,.07,.13),0,Math.cos(a)*.44,Math.sin(a)*.44,mT,{n:1}).rotation.x=a}
  w.userData.b=w.position.clone();w.userData.d=new T.Vector3(sx*1.3,0,sz*.5);parts.push(w);car.add(w);wheels.push(w)});
 // ground: grid (recoloured per theme) + platform ring
-const gnd=new T.Group();S.add(gnd);let grid;
-function mkGrid(light){if(grid){gnd.remove(grid);grid.geometry.dispose()}grid=new T.GridHelper(14,28,light?0xd9480f:0xff6a2b,light?0x9aa3b5:0x2b323d);grid.material.transparent=true;grid.material.opacity=light?.75:.85;gnd.add(grid)}
+const gnd=new T.Group();S.add(gnd);const grid=new T.GridHelper(14,28);gnd.add(grid);
+function mkGrid(light){const colors=grid.geometry.attributes.color,primary=new T.Color(light?0xd9480f:0xff6a2b),secondary=new T.Color(light?0x9aa3b5:0x2b323d);for(let i=0;i<=28;i++){const color=i===14?primary:secondary;for(let j=i*4;j<i*4+4;j++)colors.setXYZ(j,color.r,color.g,color.b)}colors.needsUpdate=true;grid.material.transparent=true;grid.material.opacity=light?.75:.85}
 mkGrid(document.documentElement.getAttribute('data-theme')==='light');
 new MutationObserver(()=>mkGrid(document.documentElement.getAttribute('data-theme')==='light')).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
 const plat=new T.Mesh(new T.RingGeometry(2.55,2.58,96),new T.MeshBasicMaterial({color:0xff6a2b,transparent:true,opacity:.55,side:T.DoubleSide}));plat.rotation.x=-Math.PI/2;plat.position.y=.01;S.add(plat);

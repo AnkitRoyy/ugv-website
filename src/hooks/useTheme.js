@@ -1,10 +1,18 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { flushSync } from 'react-dom';
 
 const KEY = 'ugv-theme';
 const root = () => document.documentElement;
 const read = () => root().getAttribute('data-theme') === 'light';
 const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let themeTimer;
+
+function animateFallback() {
+  const html = root();
+  html.classList.add('theme-anim');
+  window.clearTimeout(themeTimer);
+  themeTimer = window.setTimeout(() => html.classList.remove('theme-anim'), 240);
+}
 
 function apply(light) {
   root().setAttribute('data-theme', light ? 'light' : 'dark');
@@ -15,9 +23,7 @@ function apply(light) {
 export default function useTheme() {
   const [light, setLight] = useState(read);
 
-  useEffect(() => { apply(light); }, [light]);
-
-  const toggle = useCallback((e) => {
+  const toggle = useCallback((event) => {
     const next = !read();
     const commit = () => {
       try { localStorage.setItem(KEY, next ? 'light' : 'dark'); } catch (err) { /* storage blocked */ }
@@ -26,20 +32,30 @@ export default function useTheme() {
     };
 
     if (document.startViewTransition && !reduced()) {
-      // circular reveal that grows from the toggle button
-      const x = e?.clientX ?? window.innerWidth - 40;
-      const y = e?.clientY ?? 30;
-      const r = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
-      const t = document.startViewTransition(() => flushSync(commit));
-      t.ready.then(() => root().animate(
-        { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${r}px at ${x}px ${y}px)`] },
-        { duration: 750, easing: 'cubic-bezier(.65,0,.2,1)', pseudoElement: '::view-transition-new(root)' }
-      )).catch(() => {});
+      const bounds = event.currentTarget.getBoundingClientRect();
+      const x = event.detail ? event.clientX : bounds.left + bounds.width / 2;
+      const y = event.detail ? event.clientY : bounds.top + bounds.height / 2;
+      const radius = Math.hypot(
+        Math.max(x, window.innerWidth - x),
+        Math.max(y, window.innerHeight - y)
+      );
+      const transition = document.startViewTransition(() => flushSync(commit));
+      transition.ready.then(() => {
+        root().animate(
+          { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+          {
+            duration: 520,
+            easing: 'cubic-bezier(.2,.7,.2,1)',
+            fill: 'both',
+            pseudoElement: '::view-transition-new(root)'
+          }
+        );
+      }, animateFallback);
       return;
     }
+
     if (!reduced()) {
-      root().classList.add('theme-anim');
-      setTimeout(() => root().classList.remove('theme-anim'), 600);
+      animateFallback();
     }
     commit();
   }, []);

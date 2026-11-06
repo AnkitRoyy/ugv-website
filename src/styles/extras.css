@@ -117,10 +117,6 @@ html:not([data-theme="light"]) .page-head h1{text-shadow:none}
 .show-skip:hover span{transform:translateY(3px)}
 @media(max-width:640px){.show-skip{right:14px;top:14px;bottom:auto;height:36px;padding:0 14px;font-size:12.5px}}
 
-/* footer credit */
-.sf-credit{flex:0 0 100%;order:99;display:block;padding:18px 0 4px;text-align:center;font:500 12.5px var(--sans);letter-spacing:.02em;color:var(--t3);border-top:1px solid var(--b1);margin-top:6px}
-.sf-credit b{font-weight:650;color:var(--t2)}
-
 /* phones: department switcher wraps instead of cutting off "Research"; smaller placeholder cube */
 #team .mini-switch{flex-wrap:wrap;max-width:100%;border-radius:22px}
 @media(max-width:640px){
