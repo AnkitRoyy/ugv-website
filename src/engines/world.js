@@ -51,6 +51,7 @@ const lamp=new T.PointLight(0xff5a1f,1.6,14);lamp.position.set(0,1.5,-2.2);rv.ad
 // lidar range rings on the ground
 const rings=[0,.5].map(o=>{const m=new T.Mesh(new T.RingGeometry(.985,1,96),new T.MeshBasicMaterial({color:0xff5a1f,transparent:true,side:T.DoubleSide,depthWrite:false}));m.rotation.x=-Math.PI/2;m.userData.o=o;sc.add(m);return m});
 window.setWorldTheme=function(light){var c=light?0xe9edf3:0x06070a;rn.setClearColor(c);sc.fog.color.set(c);gm.color.set(light?0x7d8aa3:0xcfd8e8);gm.opacity=light?.6:.5;lm.color.set(light?0x6b7790:0x3a4558);if(still)rn.render(sc,cam)};
+window.setWorldTheme(document.documentElement.getAttribute('data-theme')==='light');
 // ---- INTRO: the UGV charges in, handbrake-drifts in front of the screen, then parks as the live background rover
 const INTRO=(function(){
  const root=document.documentElement,hh=location.hash,o={on:false,skip:false,step(){}};
