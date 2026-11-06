@@ -23,7 +23,7 @@ export default function Contact() {
         </div>
         <div className="contact-panel map-panel">
           <div className="map-head">
-            <h3>Locate DTU on the map</h3>
+            <h3>Locate UGV-DTU on the map</h3>
             <PageCta href={`https://www.google.com/maps/search/?api=1&query=Delhi+Technological+University`}>Open in Google Maps ↗</PageCta>
           </div>
           <div className="map-frame">
