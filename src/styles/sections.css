@@ -1,5 +1,5 @@
 /* ===== GLASS THEME: deep ink, frosted glass, ember accent ===== */
-:root{--bg:#06070a;--raised:rgba(255,255,255,.045);--over:rgba(255,255,255,.08);--b1:rgba(255,255,255,.08);--b2:rgba(255,255,255,.14);--b3:rgba(255,255,255,.28);--t1:#f1f3f8;--t2:#a8b0c2;--t3:#808aa0;--acc:#ff6a2b;--acc2:#ffb27a;--sans:'Sora',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;--col:rgba(6,7,10,.5);--glass:linear-gradient(145deg,rgba(255,255,255,.1),rgba(255,255,255,.03));--rim:inset 0 1px 0 rgba(255,255,255,.16);--lift:0 24px 48px -24px rgba(0,0,0,.75);--blur:blur(22px) saturate(1.5);color-scheme:dark}
+:root{--bg:#06070a;--raised:rgba(255,255,255,.045);--over:rgba(255,255,255,.08);--b1:rgba(255,255,255,.08);--b2:rgba(255,255,255,.14);--b3:rgba(255,255,255,.28);--t1:#f1f3f8;--t2:#a8b0c2;--t3:#808aa0;--acc:#ff6a2b;--acc2:#ffb27a;--sans:'Sora',system-ui,-apple-system,'Segoe UI',sans-serif;--col:rgba(6,7,10,.5);--glass:linear-gradient(145deg,rgba(255,255,255,.1),rgba(255,255,255,.03));--rim:inset 0 1px 0 rgba(255,255,255,.16);--lift:0 24px 48px -24px rgba(0,0,0,.75);--blur:blur(22px) saturate(1.5);color-scheme:dark}
 html{background:var(--bg);scrollbar-color:rgba(255,255,255,.22) transparent}
 body{background:var(--bg);color:var(--t1);letter-spacing:-.005em}
 ::selection{background:rgba(255,106,43,.45);color:#fff}

@@ -1,0 +1,30 @@
+/* Type system. Sora for text; Barlow Semi Condensed for the small tracked labels (replaces the
+   typewriter monospace that the labels used before). No monospace anywhere. */
+:root{
+  --sans:'Sora Variable','Sora',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --label:'Barlow Semi Condensed','Arial Narrow',system-ui,sans-serif;
+  --mono:var(--label);
+}
+.mono{font-weight:600;letter-spacing:.12em}
+
+/* hero prompt line: same idea, set in the text face */
+.type{font-family:var(--sans);font-size:14.5px;letter-spacing:-.005em}
+.type span:first-child{font-family:var(--label);font-weight:500;letter-spacing:.04em;font-size:14.5px}
+
+/* label / value rows (vehicle + showcase specs) */
+.specs div{display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:13px 0;font:400 14px/1.45 var(--sans);color:var(--t1)}
+.specs span{flex:none;font:600 12px var(--label);letter-spacing:.12em;text-transform:uppercase;color:var(--t3)}
+.specs b{font-weight:500;text-align:right;color:var(--t1)}
+.rs-body .specs div{padding:10px 0;font-size:13px}
+
+/* vehicle page: centre the placeholder CAD cube in its frame */
+#bot-hero{position:relative;display:grid;place-items:center;overflow:hidden;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:32px 32px}
+#bot-hero .cube-scene{width:150px;height:150px}
+#bot-hero .cube-face.front{transform:translateZ(75px)}#bot-hero .cube-face.back{transform:rotateY(180deg) translateZ(75px)}
+#bot-hero .cube-face.right{transform:rotateY(90deg) translateZ(75px)}#bot-hero .cube-face.left{transform:rotateY(-90deg) translateZ(75px)}
+#bot-hero .cube-face.top{transform:rotateX(90deg) translateZ(75px)}#bot-hero .cube-face.bottom{transform:rotateX(-90deg) translateZ(75px)}
+#bot-hero::after{content:"CAD preview · model to be supplied";position:absolute;left:16px;bottom:12px;font:600 11px var(--label);letter-spacing:.14em;text-transform:uppercase;color:var(--t3)}
+
+/* sub-pages: the footer always sits at the bottom of the screen, never mid-page */
+#root{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
+#root>footer{margin-top:auto}

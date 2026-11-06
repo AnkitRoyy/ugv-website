@@ -3,6 +3,7 @@ import './styles/sections.css';
 import './styles/pages.css';
 import './styles/extras.css';
 import './styles/polish.css';
+import './styles/typography.css';
 
 import useTheme from './hooks/useTheme';
 import useSiteEngines from './hooks/useSiteEngines';

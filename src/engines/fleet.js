@@ -1,13 +1,14 @@
 /* eslint-disable */
 import { BOTS } from '../data/vehicles';
+import { specRows } from '../lib/specs';
 function cubePreview(){return `<div class="cube-scene" aria-label="Rotating placeholder CAD cube"><div class="cube">${['front','back','right','left','top','bottom'].map(face=>`<i class="cube-face ${face}"></i>`).join('')}</div></div>`;}
 export function showBot(i){
   const b=BOTS[i],n=BOTS.length;
-  document.getElementById('bot-k').textContent='Vehicle 0'+(i+1)+' — '+b.y;
+  document.getElementById('bot-k').textContent='Vehicle 0'+(i+1)+(b.y&&b.y!=='TBD'?' — '+b.y:'');
   document.getElementById('bot-t').textContent=b.n;
   document.getElementById('bot-hero').innerHTML=cubePreview();
 document.getElementById('bot-d').textContent=b.d;
-  document.getElementById('bot-s').innerHTML=b.s.map(x=>`<div>${x}</div>`).join('');
+  document.getElementById('bot-s').innerHTML=specRows(b.s);
   document.getElementById('bot-sw').innerHTML=BOTS.map((x,j)=>`<a href="#/bot/${j+1}" class="${j===i?'active':''}">0${j+1} ${x.n}</a>`).join('');
   document.getElementById('bot-prev').href='#/bot/'+(((i+n-1)%n)+1);
   document.getElementById('bot-next').href='#/bot/'+(((i+1)%n)+1);
@@ -26,7 +27,7 @@ let pos=2.4,target=0,sel=-1,raf=0,drag=null,suppress=false,started=false,lock=0,
 const mod=k=>((k%N)+N)%N;
 const near=i=>{let d=mod(i-mod(Math.round(target)));if(d>N/2)d-=N;return d};
 function fill(i){const b=BOTS[i];info.innerHTML=String(i+1).padStart(2,'0')+' / '+String(N).padStart(2,'0')+'<span class="rhint"> · drag, click or ↑↓ to roll</span>';
- side.innerHTML=`<div class="bph">${cubePreview()}</div><div class="rs-body"><span class="mono">UGV platform · ${b.y}</span><h3>${b.n}</h3><div class="specs">${b.s.map(x=>`<div>${x}</div>`).join('')}</div><a class="btn p" href="#/bot/${i+1}">Open ${b.n} ↗</a></div>`}
+ side.innerHTML=`<div class="bph">${cubePreview()}</div><div class="rs-body"><span class="mono">UGV platform · ${b.y}</span><h3>${b.n}</h3><div class="specs">${specRows(b.s)}</div><a class="btn p" href="#/bot/${i+1}">Open ${b.n} ↗</a></div>`}
 function render(){
  rows.forEach((el,i)=>{const a=wrap((pos-i)*STEP);
   if(Math.abs(a)>80){el.style.visibility='hidden';el.classList.remove('on');return}

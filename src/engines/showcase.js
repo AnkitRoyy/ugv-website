@@ -2,6 +2,7 @@
 import THREE from '../lib/threeLegacy';
 import { cl, CALM, sst } from '../lib/motion';
 import { PR } from '../data/showcase';
+import { specRows } from '../lib/specs';
 
 export default function showcase() {
   if (window.__eng_showcase) return;
@@ -20,7 +21,7 @@ function drone(){const g=new THREE.Group();g.position.y=.6;bx(g,.9,.22,.9,0,1,0)
 const MD=[rover(false),rover(true),drone()];MD.forEach(m=>{m.position.x=-1.4;S.add(m)});
 function rz(){const k=document.querySelector('#show .stick'),w=k.clientWidth||innerWidth,h=k.clientHeight||innerHeight;R.setSize(w,h,false);C.aspect=w/h;C.position.set(w<800?7:5.2,w<800?4.4:3.4,w<800?8:6);C.lookAt(w<800?0:0,.9,0);C.updateProjectionMatrix()}rz();addEventListener('resize',rz);
 const stk=document.querySelector('#show .stick'),sh=document.getElementById('show'),pn=document.getElementById('pn'),rb=[...document.querySelectorAll('#rail b')];let cur=-1,pp=0;
-function setP(i){cur=i;const p=PR[i];document.getElementById('lab').textContent=`Scroll to rotate · ${i+1} / 3 projects · illustrative models`;pk.textContent=p.k;pt.textContent=p.t;pd.textContent=p.d;ps.innerHTML=p.s.map(s=>`<div>${s}</div>`).join('');MD.forEach((m,j)=>m.visible=j===i)}
+function setP(i){cur=i;const p=PR[i];document.getElementById('lab').textContent=`Scroll to rotate · ${i+1} / 3 projects · illustrative models`;pk.textContent=p.k;pt.textContent=p.t;pd.textContent=p.d;ps.innerHTML=specRows(p.s);MD.forEach((m,j)=>m.visible=j===i)}
 let lt=0,ee=0,le=-1;
 (function loop(t){const dt=Math.min(.05,Math.max(.001,(t-lt)/1000||.016));lt=t;
 const r=sh.getBoundingClientRect();const p=cl((84-r.top)/(r.height-stk.offsetHeight),0,.9999);
