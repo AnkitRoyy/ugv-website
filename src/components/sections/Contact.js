@@ -14,11 +14,11 @@ export default function Contact() {
           <h3>Contact the team</h3>
           <div className="contact-line"><span className="mono">Email</span><strong><a href={SITE.email.href}>{SITE.email.label}</a></strong></div>
           <div className="contact-line"><span className="mono">Phone</span><strong><a href={SITE.contactPagePhone.href}>{SITE.contactPagePhone.label}</a></strong></div>
-          <div className="contact-line"><span className="mono">Instagram</span><strong><a href={SITE.instagram} target="_blank" rel="noopener noreferrer">@ugv_dtu ↗</a></strong></div>
+          <div className="contact-line"><span className="mono">Instagram</span><strong><a href={SITE.instagram} target="_blank" rel="noopener noreferrer">@ugvdtu ↗</a></strong></div>
         </div>
         <div className="contact-panel">
           <h3>Find us at DTU</h3>
-          <div className="contact-line"><span className="mono">Workshop / Team space</span><strong>3rd Floor, Electrical Department</strong></div>
+          <div className="contact-line"><span className="mono">Workshop / Team space</span><strong>WT-3 and 4, Wind Tunnel</strong></div>
           <div className="contact-line"><strong>Delhi Technological University</strong><span>Shahbad Daulatpur Village, Rohini, Delhi — 110042</span></div>
         </div>
         <div className="contact-panel map-panel">
