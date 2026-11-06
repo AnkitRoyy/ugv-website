@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import '@fontsource-variable/sora';
-import '@fontsource/barlow-semi-condensed/500.css';
-import '@fontsource/barlow-semi-condensed/600.css';
+import '@fontsource-variable/bricolage-grotesque';
+import '@fontsource-variable/hanken-grotesk';
 import App from './App';
 
 ReactDOM.createRoot(document.getElementById('root')).render(

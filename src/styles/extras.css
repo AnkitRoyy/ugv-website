@@ -110,3 +110,23 @@ html:not([data-theme="light"]) .page-head h1{text-shadow:none}
 .card .soc a{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:rgba(10,10,12,.72);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.22);color:#fff;transition:background-color .25s,border-color .25s,transform .3s cubic-bezier(.2,.7,.2,1)}
 .card .soc a:hover{background:#ff6a2b;border-color:#ff6a2b;transform:translateY(-2px) scale(1.06)}
 @media(hover:none){.card .soc{opacity:1;transform:none}}
+
+/* showcase skip button */
+.show-skip{position:absolute;right:22px;bottom:20px;z-index:6;height:42px;padding:0 18px;font-size:13px;background:rgba(12,13,17,.6);backdrop-filter:blur(10px)}
+.show-skip span{display:inline-block;margin-left:6px;transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.show-skip:hover span{transform:translateY(3px)}
+@media(max-width:640px){.show-skip{right:14px;top:14px;bottom:auto;height:36px;padding:0 14px;font-size:12.5px}}
+
+/* footer credit */
+.sf-credit{flex:0 0 100%;order:99;display:block;padding:18px 0 4px;text-align:center;font:500 12.5px var(--sans);letter-spacing:.02em;color:var(--t3);border-top:1px solid var(--b1);margin-top:6px}
+.sf-credit b{font-weight:650;color:var(--t2)}
+
+/* phones: department switcher wraps instead of cutting off "Research"; smaller placeholder cube */
+#team .mini-switch{flex-wrap:wrap;max-width:100%;border-radius:22px}
+@media(max-width:640px){
+  #team .mini-switch a{flex:1 1 calc(50% - 2px);text-align:center}
+  #bot-hero .cube-scene{width:100px;height:100px}
+  #bot-hero .cube-face.front{transform:translateZ(50px)}#bot-hero .cube-face.back{transform:rotateY(180deg) translateZ(50px)}
+  #bot-hero .cube-face.right{transform:rotateY(90deg) translateZ(50px)}#bot-hero .cube-face.left{transform:rotateY(-90deg) translateZ(50px)}
+  #bot-hero .cube-face.top{transform:rotateX(90deg) translateZ(50px)}#bot-hero .cube-face.bottom{transform:rotateX(-90deg) translateZ(50px)}
+}

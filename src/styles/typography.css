@@ -1,21 +1,76 @@
-/* Type system. Sora for text; Barlow Semi Condensed for the small tracked labels (replaces the
-   typewriter monospace that the labels used before). No monospace anywhere. */
+/* Type system
+   Display  : Bricolage Grotesque, headlines, big numbers and the wordmark (has real character at large sizes)
+   Text/UI  : Hanken Grotesk, paragraphs, buttons, navigation (calm and very legible at small sizes)
+   Labels   : Hanken Grotesk semibold, small tracked caps. One family for text and labels, two in total.
+   No monospace anywhere. */
 :root{
-  --sans:'Sora Variable','Sora',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --label:'Barlow Semi Condensed','Arial Narrow',system-ui,sans-serif;
+  --display:'Bricolage Grotesque Variable','Bricolage Grotesque',system-ui,sans-serif;
+  --sans:'Hanken Grotesk Variable','Hanken Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --label:var(--sans);
   --mono:var(--label);
 }
-.mono{font-weight:600;letter-spacing:.12em}
+body{font-feature-settings:'ss01','kern';-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4{font-family:var(--display);font-optical-sizing:auto}
+.brand,.nav-brand,.brand *{font-family:var(--display)}
 
-/* hero prompt line: same idea, set in the text face */
-.type{font-family:var(--sans);font-size:14.5px;letter-spacing:-.005em}
-.type span:first-child{font-family:var(--label);font-weight:500;letter-spacing:.04em;font-size:14.5px}
+/* display text: tighter tracking suited to Bricolage, plus the elements that set their own font */
+.hero h1,
+.panel h2,
+.sec h2.t,
+.card h3,
+.dossier-meta h3,
+.binf h3,
+.dept-switch-mark,
+.dept-transition-copy strong,
+.page-head h1,
+.info-tile .num,
+.achievement .num,
+.info-tile h3,
+.achievement h3,
+.research-card h3,
+.blog-card h3,
+.blog-intro h2,
+.contact-panel h3,
+.site-page .page-head h1,
+.brand-word b,
+.ach-stat b,
+.hero-stats b,
+#tt,
+#bot-t,
+.blog-intro .blog-visual,
+.blog-card .blog-thumb,
+.rs-body h3,
+.rs-card h3,
+.sf-name,
+.vg-cap,
+.drum-row .v,
+.bl-card.feat .bl-body h3,
+.bl-body h3,
+.bp-head h1,
+.bp-body h2,
+.bp-body h3,
+.bp-lede,
+.vs-ui .big,
+#pt,
+.solo h1,
+.about-copy h2{font-family:var(--display);font-optical-sizing:auto;letter-spacing:-.03em}
+.hero h1,.brand-word b{letter-spacing:-.04em;font-weight:600}
+.info-tile .num,.achievement .num,.ach-stat b,.hero-stats b{font-variant-numeric:lining-nums tabular-nums;font-weight:600;letter-spacing:-.02em}
+.card h3,.rs-card h3,.bl-body h3{font-weight:600;letter-spacing:-.02em}
+
+/* small tracked labels */
+.mono{font-weight:650;letter-spacing:.1em}
+.specs span,.vmeta,.bl-meta,.bp-meta{font-family:var(--label)}
+
+/* hero prompt line */
+.type{font-family:var(--sans);font-size:15px;letter-spacing:-.005em}
+.type span:first-child{font-family:var(--label);font-weight:600;letter-spacing:.04em;font-size:14.5px}
 
 /* label / value rows (vehicle + showcase specs) */
-.specs div{display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:13px 0;font:400 14px/1.45 var(--sans);color:var(--t1)}
-.specs span{flex:none;font:600 12px var(--label);letter-spacing:.12em;text-transform:uppercase;color:var(--t3)}
-.specs b{font-weight:500;text-align:right;color:var(--t1)}
-.rs-body .specs div{padding:10px 0;font-size:13px}
+.specs div{display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:13px 0;font:400 14.5px/1.45 var(--sans);color:var(--t1)}
+.specs span{flex:none;font:650 11.5px var(--label);letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
+.specs b{font-weight:550;text-align:right;color:var(--t1)}
+.rs-body .specs div{padding:10px 0;font-size:13.5px}
 
 /* vehicle page: centre the placeholder CAD cube in its frame */
 #bot-hero{position:relative;display:grid;place-items:center;overflow:hidden;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:32px 32px}
@@ -28,3 +83,8 @@
 /* sub-pages: the footer always sits at the bottom of the screen, never mid-page */
 #root{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
 #root>footer{margin-top:auto}
+
+/* text selection: readable in both themes (the old light-mode rule inherited white text) */
+::selection{background:rgba(255,106,43,.42);color:#fff}
+html[data-theme="light"] ::selection,html[data-theme="light"]::selection{background:rgba(255,106,43,.3);color:#14151a}
+html[data-theme="light"] #show .stick ::selection{background:rgba(255,106,43,.5);color:#fff}
