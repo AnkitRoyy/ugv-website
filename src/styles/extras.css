@@ -93,3 +93,13 @@ html:not([data-theme="light"]) .page-head h1{text-shadow:none}
 .blog-md img{max-width:100%;height:auto}
 .blog-md h2,.blog-md h3{margin:1.6em 0 .6em}
 .blog-md ul,.blog-md ol{padding-left:1.3em}
+
+/* sponsors: logos sit on a light plate so dark and coloured marks all stay readable */
+.sponsor-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;max-width:1080px;margin:0 auto}
+.sponsor-tile{flex:0 1 calc(25% - 12px);min-width:190px;min-height:0;display:flex;flex-direction:column;gap:10px;padding:10px;border:1px solid var(--b2);border-radius:18px;background:rgba(255,255,255,.035);transition:transform .3s cubic-bezier(.2,.7,.2,1),border-color .3s}
+.sponsor-tile:hover{transform:translateY(-3px);border-color:var(--b3)}
+.sponsor-logo{width:100%;height:112px;padding:18px 22px;border-radius:12px;background:#f1f3f7;filter:none;display:flex;align-items:center;justify-content:center;font-size:0}
+.sponsor-logo img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
+.sponsor-tile small{display:block;text-align:center;font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--t3)}
+[data-theme="light"] .sponsor-logo{background:#fff;border:1px solid var(--b2)}
+@media(max-width:700px){.sponsor-grid{gap:10px}.sponsor-tile{flex-basis:calc(50% - 5px);min-width:0;padding:8px;border-radius:14px}.sponsor-logo{height:84px;padding:12px 14px}}

@@ -10,7 +10,6 @@ import fleet from '../engines/fleet';
 import teams from '../engines/teams';
 import achievements from '../engines/achievements';
 import research from '../engines/research';
-import gallery from '../engines/gallery';
 import router from '../engines/router';
 import nav from '../engines/nav';
 
@@ -34,7 +33,6 @@ export default function useSiteEngines() {
     safely('teams', teams);
     safely('achievements', achievements);
     safely('research', research);
-    safely('gallery', gallery);
     safely('router', router);
     safely('nav', nav);
   }, []);

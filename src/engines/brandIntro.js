@@ -3,7 +3,7 @@
 export default function brandIntro() {
   if (window.__eng_brandIntro) return;
   window.__eng_brandIntro = 1;
-window.__startBrand=function(){if(window.__bs)return;window.__bs=1;setTimeout(function(){window.brandIntro&&brandIntro()},150)};
+window.__startBrand=function(){if(window.__bs)return;window.__bs=1;setTimeout(function(){window.brandIntro&&window.brandIntro()},150)};
 const __go=()=>{if(!window.__introPending)__startBrand()};document.readyState==='complete'?__go():addEventListener('load',__go);
 (function(){
 const lock=document.getElementById('brandLockup'),logo=document.getElementById('heroLogo'),word=document.getElementById('brandWord'),trail=document.getElementById('brandTrail'),hero=document.getElementById('home');

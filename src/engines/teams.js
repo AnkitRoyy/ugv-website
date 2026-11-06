@@ -39,9 +39,30 @@ export default function teams() {
   if (window.__eng_teams) return;
   window.__eng_teams = 1;
   document.getElementById('cc').innerHTML=LEADERSHIP.map(p=>card(p.name,p.role,'',p.image)).join('');
-document.querySelectorAll('.w-slice').forEach(el=>el.addEventListener('click',e=>{
-  e.preventDefault();switchDepartment(el.dataset.dept);
-}));
+// department dial: hover / focus previews, click opens. On touch the first tap previews the
+// unit and a second tap on the same unit (or the roster button) opens it.
+{
+  const slices=[...document.querySelectorAll('.w-slice')],wheel=document.getElementById('dept-wheel');
+  const order=['software','electrical','research','mechanical'];
+  let ptype='mouse',wasActive=false;
+  slices.forEach(el=>{
+    el.setAttribute('role','button');el.tabIndex=0;el.setAttribute('aria-label','Preview '+TM[el.dataset.dept][0]+' department');
+    el.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')previewDept(el.dataset.dept)});
+    el.addEventListener('focus',()=>previewDept(el.dataset.dept));
+    el.addEventListener('pointerdown',e=>{ptype=e.pointerType;wasActive=el.classList.contains('active')});
+    el.addEventListener('click',e=>{
+      e.preventDefault();
+      if(ptype!=='mouse'&&!wasActive){previewDept(el.dataset.dept);return}
+      switchDepartment(el.dataset.dept);
+    });
+    el.addEventListener('keydown',e=>{
+      const i=order.indexOf(el.dataset.dept);
+      if(e.key==='Enter'||e.key===' '){e.preventDefault();switchDepartment(el.dataset.dept)}
+      else if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();slices.find(s=>s.dataset.dept===order[(i+1)%4]).focus()}
+      else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();slices.find(s=>s.dataset.dept===order[(i+3)%4]).focus()}
+    });
+  });
+}
 document.querySelectorAll('#team-mini-switch a').forEach(el=>el.addEventListener('click',e=>{
   e.preventDefault();if(!el.classList.contains('active'))switchDepartment(el.dataset.dept);
 }));

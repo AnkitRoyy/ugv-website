@@ -9,7 +9,7 @@ export default function Teams() {
 <div className="wheel-stage">
   <div className="wheel-wrap" id="dept-wheel" aria-label="Department Head Selector Wheel">
     
-    <a href="#/software" className="w-slice top active" data-dept="software" onmouseenter="previewDept('software')" onfocus="previewDept('software')">
+    <a href="#/software" className="w-slice top active" data-dept="software">
       <div className="w-node">
         <span className="mono">01</span>
         <div className="w-bust"></div>
@@ -19,7 +19,7 @@ export default function Teams() {
     </a>
 
     
-    <a href="#/mechanical" className="w-slice left" data-dept="mechanical" onmouseenter="previewDept('mechanical')" onfocus="previewDept('mechanical')">
+    <a href="#/mechanical" className="w-slice left" data-dept="mechanical">
       <div className="w-node">
         <span className="mono">02</span>
         <div className="w-bust"></div>
@@ -29,7 +29,7 @@ export default function Teams() {
     </a>
 
     
-    <a href="#/electrical" className="w-slice right" data-dept="electrical" onmouseenter="previewDept('electrical')" onfocus="previewDept('electrical')">
+    <a href="#/electrical" className="w-slice right" data-dept="electrical">
       <div className="w-node">
         <span className="mono">03</span>
         <div className="w-bust"></div>
@@ -39,7 +39,7 @@ export default function Teams() {
     </a>
 
     
-    <a href="#/research" className="w-slice bottom" data-dept="research" onmouseenter="previewDept('research')" onfocus="previewDept('research')">
+    <a href="#/research" className="w-slice bottom" data-dept="research">
       <div className="w-node">
         <span className="w-title">Research</span>
         <span className="w-head-name">Head — Research</span>
