@@ -156,6 +156,8 @@ body.t #team{display:block}
 .bph{position:relative;min-height:205px;display:grid;place-items:center;overflow:hidden;border-bottom:1px solid var(--b1);background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:22px 22px}
 .bph::before{content:"";position:absolute;width:150px;height:150px;border:1px solid rgba(255,255,255,.12);border-radius:50%;box-shadow:0 0 0 18px rgba(255,255,255,.018),0 0 0 38px rgba(255,255,255,.012)}
 .bph::after{content:"CAD / PREVIEW";position:absolute;left:14px;bottom:12px;font:400 9px var(--mono);letter-spacing:.16em;color:var(--t3)}
+.bph.model-preview canvas{position:absolute;inset:0;z-index:1;display:block;width:100%;height:100%}
+.bph.model-preview::before,.bph.model-preview::after{z-index:2;pointer-events:none}
 .cube-scene{position:relative;z-index:1;width:112px;height:112px;perspective:500px}
 .cube{position:absolute;inset:0;transform-style:preserve-3d;animation:cubeSpin 9s linear infinite}
 .bot:hover .cube{animation-duration:4s}

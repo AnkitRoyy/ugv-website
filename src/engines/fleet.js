@@ -1,12 +1,179 @@
 /* eslint-disable */
 import { BOTS } from '../data/vehicles';
 import { specRows } from '../lib/specs';
+import THREE from '../lib/threeLegacy';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+
+const activeModelCleanups=new Set();
+let previewModelCleanup;
+
 function cubePreview(){return `<div class="cube-scene" aria-label="Rotating placeholder CAD cube"><div class="cube">${['front','back','right','left','top','bottom'].map(face=>`<i class="cube-face ${face}"></i>`).join('')}</div></div>`;}
+
+export function disposeBotModel(){
+  activeModelCleanups.forEach(cleanup=>cleanup());
+  activeModelCleanups.clear();
+}
+
+function showBotModel(container,botName,{compact=false}={}){
+  const modelFile=`/${botName.toLowerCase()}.glb`;
+  container.dataset.modelState='loading';
+  container.innerHTML=`<div class="model-status" role="status">Loading ${botName} CAD model…</div>`;
+
+  let renderer,frame,resizeObserver,disposed=false,model,grid,cleanup;
+  const sourceMaterials=new Set();
+  const scene=new THREE.Scene();
+  if(!compact)scene.background=new THREE.Color(0x171112);
+  const camera=new THREE.PerspectiveCamera(35,1,.1,100);
+  camera.position.set(0,compact ? 0.65 : 1.1,compact ? 4.8 : 4.6);
+  camera.lookAt(0,0,0);
+  scene.add(new THREE.AmbientLight(0xffffff,.8));
+  const key=new THREE.DirectionalLight(0xffffff,2);
+  key.position.set(3,5,4);
+  scene.add(key);
+  const fill=new THREE.DirectionalLight(0x7c9cff,1);
+  fill.position.set(-4,2,-3);
+  scene.add(fill);
+  if(!compact){
+    grid=new THREE.GridHelper(14,28,0xff713b,0x263442);
+    grid.position.y=-1.2;
+    scene.add(grid);
+  }
+  const outlines=[];
+  const outlineMaterial=new THREE.LineBasicMaterial({color:0x9aa3ad,transparent:true,opacity:.8,depthWrite:false});
+
+  cleanup=()=>{
+    if(disposed)return;
+    disposed=true;
+    cancelAnimationFrame(frame);
+    resizeObserver?.disconnect();
+    renderer?.dispose();
+    if(model)model.traverse(node=>{
+      if(node.isMesh){
+        node.geometry.dispose();
+        const materials=Array.isArray(node.material)?node.material:[node.material];
+        materials.forEach(material=>material.dispose());
+      }
+    });
+    sourceMaterials.forEach(material=>material.dispose());
+    outlines.forEach(outline=>outline.geometry.dispose());
+    outlineMaterial.dispose();
+    if(grid){
+      grid.geometry.dispose();
+      const gridMaterials=Array.isArray(grid.material)?grid.material:[grid.material];
+      gridMaterials.forEach(material=>material.dispose());
+    }
+    activeModelCleanups.delete(cleanup);
+  };
+  activeModelCleanups.add(cleanup);
+
+  try{
+    renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+    renderer.setClearColor(0x171112,compact?0:1);
+    renderer.toneMapping=THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure=.85;
+    renderer.domElement.setAttribute('aria-label',`Interactive 3D model of ${botName}`);
+    container.appendChild(renderer.domElement);
+
+    const resize=()=>{
+      const width=container.clientWidth,height=container.clientHeight;
+      if(!width||!height)return;
+      renderer.setSize(width,height,false);
+      camera.aspect=width/height;
+      camera.updateProjectionMatrix();
+    };
+    resizeObserver=new ResizeObserver(resize);
+    resizeObserver.observe(container);
+    resize();
+    renderer.render(scene,camera);
+
+    const loader=new GLTFLoader();
+    loader.load(modelFile,gltf=>{
+      model=gltf.scene;
+      if(disposed){
+        model.traverse(node=>{
+          if(node.isMesh){
+            node.geometry.dispose();
+            const materials=Array.isArray(node.material)?node.material:[node.material];
+            materials.forEach(material=>material.dispose());
+          }
+        });
+        return;
+      }
+      const bounds=new THREE.Box3().setFromObject(model);
+      const size=bounds.getSize(new THREE.Vector3());
+      const center=bounds.getCenter(new THREE.Vector3());
+      const largestDimension=Math.max(size.x,size.y,size.z);
+      if(!largestDimension){
+        container.dataset.modelState='error';
+        container.innerHTML=`<div class="model-status" role="alert">${botName}’s CAD model has no visible geometry.</div>`;
+        cleanup();
+        return;
+      }
+      const scale=2.4/largestDimension;
+      model.scale.setScalar(scale);
+      model.position.copy(center).multiplyScalar(-scale);
+      if(grid)grid.position.y=(bounds.min.y-center.y)*scale-.015;
+      model.traverse(node=>{
+        if(!node.isMesh)return;
+        const partBounds=new THREE.Box3().setFromObject(node);
+        const partSize=partBounds.getSize(new THREE.Vector3());
+        const relativeSize=Math.max(partSize.x,partSize.y,partSize.z)/(largestDimension*scale);
+        const shade=relativeSize>0.35?0.76:relativeSize>0.14?0.9:1.12;
+        const materials=Array.isArray(node.material)?node.material:[node.material];
+        const shadedMaterials=materials.map(material=>{
+          sourceMaterials.add(material);
+          const shaded=material.clone();
+          if(shaded.color)shaded.color.multiplyScalar(shade);
+          if('metalness' in shaded)shaded.metalness=.75;
+          if('roughness' in shaded)shaded.roughness=.3;
+          shaded.needsUpdate=true;
+          return shaded;
+        });
+        node.material=Array.isArray(node.material)?shadedMaterials:shadedMaterials[0];
+        const outline=new THREE.LineSegments(new THREE.EdgesGeometry(node.geometry,15),outlineMaterial);
+        outline.scale.setScalar(1.001);
+        node.add(outline);
+        outlines.push(outline);
+      });
+      scene.add(model);
+      container.dataset.modelState='loaded';
+      container.dataset.modelLabel=`${botName} · 3D CAD model`;
+      container.querySelector('.model-status')?.remove();
+      const draw=()=>{
+        if(disposed)return;
+        model.rotation.y+=.003;
+        renderer.render(scene,camera);
+        frame=requestAnimationFrame(draw);
+      };
+      draw();
+    },undefined,()=>{
+      if(disposed)return;
+      container.dataset.modelState='error';
+      container.querySelector('.model-status')?.remove();
+      const status=document.createElement('div');
+      status.className='model-status';
+      status.setAttribute('role','alert');
+      status.textContent=`Could not load ${botName}’s model. Add the exported file at public/${modelFile.slice(1)}.`;
+      container.appendChild(status);
+    });
+  }catch(error){
+    cleanup();
+    container.dataset.modelState='error';
+    container.innerHTML='<div class="model-status" role="alert">3D preview could not be started in this browser.</div>';
+    console.error(`Could not initialize ${botName} 3D preview.`,error);
+  }
+  return cleanup;
+}
+
 export function showBot(i){
   const b=BOTS[i],n=BOTS.length;
+  disposeBotModel();
   document.getElementById('bot-k').textContent='Vehicle 0'+(i+1)+(b.y&&b.y!=='TBD'?' — '+b.y:'');
   document.getElementById('bot-t').textContent=b.n;
-  document.getElementById('bot-hero').innerHTML=cubePreview();
+  const hero=document.getElementById('bot-hero');
+  hero.dataset.bot=b.n;
+  showBotModel(hero,b.n);
 document.getElementById('bot-d').textContent=b.d;
   document.getElementById('bot-s').innerHTML=specRows(b.s);
   document.getElementById('bot-sw').innerHTML=BOTS.map((x,j)=>`<a href="#/bot/${j+1}" class="${j===i?'active':''}">0${j+1} ${x.n}</a>`).join('');
@@ -26,8 +193,10 @@ const rows=[...cyl.children];
 let pos=2.4,target=0,sel=-1,raf=0,drag=null,suppress=false,started=false,lock=0,engaged=false;
 const mod=k=>((k%N)+N)%N;
 const near=i=>{let d=mod(i-mod(Math.round(target)));if(d>N/2)d-=N;return d};
-function fill(i){const b=BOTS[i];info.innerHTML=String(i+1).padStart(2,'0')+' / '+String(N).padStart(2,'0')+'<span class="rhint"> · drag, click or ↑↓ to roll</span>';
- side.innerHTML=`<div class="bph">${cubePreview()}</div><div class="rs-body"><span class="mono">UGV platform · ${b.y}</span><h3>${b.n}</h3><div class="specs">${specRows(b.s)}</div><a class="btn p" href="#/bot/${i+1}">Open ${b.n} ↗</a></div>`}
+function fill(i){const b=BOTS[i];previewModelCleanup?.();previewModelCleanup=undefined;info.innerHTML=String(i+1).padStart(2,'0')+' / '+String(N).padStart(2,'0')+'<span class="rhint"> · drag, click or ↑↓ to roll</span>';
+ const preview=b.n==='Avni'?'<div class="bph model-preview" aria-label="Avni 3D model preview"></div>':`<div class="bph">${cubePreview()}</div>`;
+ side.innerHTML=`${preview}<div class="rs-body"><span class="mono">UGV platform · ${b.y}</span><h3>${b.n}</h3><div class="specs">${specRows(b.s)}</div><a class="btn p" href="#/bot/${i+1}">Open ${b.n} ↗</a></div>`;
+ if(b.n==='Avni')previewModelCleanup=showBotModel(side.querySelector('.model-preview'),b.n,{compact:true})}
 function render(){
  rows.forEach((el,i)=>{const a=wrap((pos-i)*STEP);
   if(Math.abs(a)>80){el.style.visibility='hidden';el.classList.remove('on');return}

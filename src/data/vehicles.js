@@ -2,18 +2,18 @@
 // not in the repo: they are marked TBD until the team supplies them.
 export const BOTS = [
   {
-    "n": "Avni",
+    "n": "Ashwini",
     "y": "TBD",
-    "d": "Our latest flagship UGV rover engineered specifically for the Unmanned Ground Vehicle Challenge (UGVC). Avni features custom suspension kinematics, a decentralized ROS 2-based autonomy architecture, and a state-of-the-art sensory and computing payload.",
+    "d": "A fully autonomous unmanned ground vehicle capable of navigation, obstacle avoidance, and real-world terrain traversal using sensor fusion.",
     "s": [
       "Drive — TBD",
       "Specifications — To be added"
     ]
   },
   {
-    "n": "Ashwini",
+    "n": "Avni",
     "y": "TBD",
-    "d": "A fully autonomous unmanned ground vehicle capable of navigation, obstacle avoidance, and real-world terrain traversal using sensor fusion.",
+    "d": "Our latest flagship UGV rover engineered specifically for the Unmanned Ground Vehicle Challenge (UGVC). Avni features custom suspension kinematics, a decentralized ROS 2-based autonomy architecture, and a state-of-the-art sensory and computing payload.",
     "s": [
       "Drive — TBD",
       "Specifications — To be added"

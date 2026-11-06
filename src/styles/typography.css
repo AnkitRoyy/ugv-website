@@ -73,12 +73,16 @@ h1,h2,h3,h4{font-family:var(--display);font-optical-sizing:auto}
 .rs-body .specs div{padding:10px 0;font-size:13.5px}
 
 /* vehicle page: centre the placeholder CAD cube in its frame */
-#bot-hero{position:relative;display:grid;place-items:center;overflow:hidden;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:32px 32px}
-#bot-hero .cube-scene{width:150px;height:150px}
+#bot-hero{position:relative;display:grid;place-items:center;overflow:hidden;background:#171112;border-radius:12px}
+#bot-hero .cube-scene{position:relative;z-index:1;width:150px;height:150px}
 #bot-hero .cube-face.front{transform:translateZ(75px)}#bot-hero .cube-face.back{transform:rotateY(180deg) translateZ(75px)}
 #bot-hero .cube-face.right{transform:rotateY(90deg) translateZ(75px)}#bot-hero .cube-face.left{transform:rotateY(-90deg) translateZ(75px)}
 #bot-hero .cube-face.top{transform:rotateX(90deg) translateZ(75px)}#bot-hero .cube-face.bottom{transform:rotateX(-90deg) translateZ(75px)}
 #bot-hero::after{content:"CAD preview · model to be supplied";position:absolute;left:16px;bottom:12px;font:600 11px var(--label);letter-spacing:.14em;text-transform:uppercase;color:var(--t3)}
+#bot-hero[data-model-state="loaded"]::after{content:attr(data-model-label)}
+#bot-hero[data-model-state="loading"]::after,#bot-hero[data-model-state="error"]::after{display:none}
+#bot-hero canvas{position:relative;z-index:1;display:block;width:100%;height:100%}
+#bot-hero .model-status{position:absolute;z-index:2;inset:0;display:grid;place-items:center;padding:24px;text-align:center;color:var(--t2);font:500 14px/1.5 var(--sans)}
 
 /* sub-pages: the footer always sits at the bottom of the screen, never mid-page */
 #root{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
