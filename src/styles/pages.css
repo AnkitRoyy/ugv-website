@@ -29,6 +29,13 @@ body::before{background:radial-gradient(60% 50% at 10% 6%,rgba(255,106,43,.16),t
 .page-head,.site-page .page-head{max-width:760px;margin:0 auto 48px}
 .page-head h1,.site-page .page-head h1{font-size:clamp(32px,4.8vw,58px)}
 .page-head p,.site-page .page-head p{font-size:16.5px;max-width:620px}
+.isdc-intro,.ugvc-intro{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:center;gap:clamp(24px,4vw,48px);max-width:1120px;margin:0 auto 36px;padding:clamp(20px,3vw,32px);border:1px solid var(--b2);border-radius:20px;background:var(--glass);box-shadow:var(--rim),var(--lift)}
+.isdc-intro img,.ugvc-intro img{display:block;width:100%;height:100%;min-height:280px;max-height:430px;object-fit:cover;border-radius:12px}
+.isdc-intro-copy>.mono,.ugvc-intro-copy>.mono{color:var(--acc)}
+.isdc-intro-copy h2,.ugvc-intro-copy h2{margin:8px 0 16px;font:500 clamp(32px,4vw,48px)/1 var(--display);letter-spacing:-.04em}
+.isdc-intro-copy p,.ugvc-intro-copy p{margin:0 0 14px;color:var(--t2);font-size:15px;line-height:1.7}
+.isdc-intro-copy p:last-child,.ugvc-intro-copy p:last-child{margin-bottom:0}
+@media(max-width:760px){.isdc-intro,.ugvc-intro{grid-template-columns:1fr}.isdc-intro img,.ugvc-intro img{min-height:0;max-height:none;aspect-ratio:3/2}}
 
 /* WIDE — projects stage */
 #show.project-section{padding:0 var(--px)}
