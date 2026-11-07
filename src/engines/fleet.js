@@ -6,7 +6,8 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 const activeModelCleanups=new Set();
-let fleetSlideTimer;
+const MAX_OUTLINE_INDICES=60000;
+const CAD_BASE_COLOR=0x999999;
 
 export function disposeBotModel(){
   activeModelCleanups.forEach(cleanup=>cleanup());
@@ -31,7 +32,7 @@ function showBotModel(container,botName,{compact=false}={}){
   const key=new THREE.DirectionalLight(0xffffff,2);
   key.position.set(3,5,4);
   scene.add(key);
-  const fill=new THREE.DirectionalLight(0x7c9cff,1);
+  const fill=new THREE.DirectionalLight(0xffffff,.6);
   fill.position.set(-4,2,-3);
   scene.add(fill);
   if(!compact){
@@ -49,6 +50,7 @@ function showBotModel(container,botName,{compact=false}={}){
     resizeObserver?.disconnect();
     controls?.dispose();
     renderer?.dispose();
+    renderer?.forceContextLoss();
     if(model)model.traverse(node=>{
       if(node.isMesh){
         node.geometry.dispose();
@@ -70,7 +72,7 @@ function showBotModel(container,botName,{compact=false}={}){
 
   try{
     renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));
     renderer.setClearColor(0x171112,compact?0:1);
     renderer.toneMapping=THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure=.85;
@@ -110,6 +112,7 @@ function showBotModel(container,botName,{compact=false}={}){
         });
         return;
       }
+      resize();
       const bounds=new THREE.Box3().setFromObject(model);
       const size=bounds.getSize(new THREE.Vector3());
       const center=bounds.getCenter(new THREE.Vector3());
@@ -120,7 +123,7 @@ function showBotModel(container,botName,{compact=false}={}){
         cleanup();
         return;
       }
-      const framingScale=botName==='Ashwini'?(compact?0.6:0.9):1;
+      const framingScale=botName==='Valkyrie'?1.3:botName==='Ashwini'?(compact?0.6:0.9):1;
       const scale=2.4/largestDimension*framingScale;
       model.scale.setScalar(scale);
       model.position.copy(center).multiplyScalar(-scale);
@@ -133,45 +136,79 @@ function showBotModel(container,botName,{compact=false}={}){
       rotationPivot=new THREE.Group();
       rotationPivot.add(model);
       scene.add(rotationPivot);
-      model.traverse(node=>{
-        if(!node.isMesh)return;
-        const partBounds=new THREE.Box3().setFromObject(node);
-        const partSize=partBounds.getSize(new THREE.Vector3());
-        const relativeSize=Math.max(partSize.x,partSize.y,partSize.z)/(largestDimension*scale);
-        const shade=relativeSize>0.35?0.76:relativeSize>0.14?0.9:1.12;
-        const materials=Array.isArray(node.material)?node.material:[node.material];
-        const shadedMaterials=materials.map(material=>{
-          sourceMaterials.add(material);
-          const shaded=material.clone();
-          if(shaded.color)shaded.color.multiplyScalar(shade);
-          if('metalness' in shaded)shaded.metalness=.75;
-          if('roughness' in shaded)shaded.roughness=.3;
-          shaded.needsUpdate=true;
-          return shaded;
-        });
-        node.material=Array.isArray(node.material)?shadedMaterials:shadedMaterials[0];
-        const outline=new THREE.LineSegments(new THREE.EdgesGeometry(node.geometry,15),outlineMaterial);
-        outline.scale.setScalar(1.001);
-        node.add(outline);
-        outlines.push(outline);
-      });
-      container.dataset.modelState='loaded';
-      container.dataset.modelLabel=`${botName} · 3D CAD model`;
-      container.querySelector('.model-status')?.remove();
-      const hint=document.createElement('span');
-      hint.className='model-hint';
-      hint.textContent='Drag to rotate · scroll to zoom';
-      hint.setAttribute('aria-hidden','true');
-      container.appendChild(hint);
-      const draw=()=>{
+      const meshNodes=[];
+      model.traverse(node=>{if(node.isMesh)meshNodes.push(node)});
+      let meshIndex=0;
+      const prepareBatch=()=>{
         if(disposed)return;
-        if(rotationPivot)rotationPivot.rotation.y+=.003;
-        controls?.update();
-        renderer.render(scene,camera);
-        frame=requestAnimationFrame(draw);
+        const batchStart=performance.now();
+        try{
+          while(meshIndex<meshNodes.length&&(meshIndex===0||performance.now()-batchStart<5)){
+            const node=meshNodes[meshIndex++];
+            const materials=Array.isArray(node.material)?node.material:[node.material];
+            const shadedMaterials=materials.map(material=>{
+              sourceMaterials.add(material);
+              const shaded=material.clone();
+              shaded.vertexColors=false;
+              if(shaded.color)shaded.color.setHex(CAD_BASE_COLOR);
+              if('map' in shaded)shaded.map=null;
+              if(shaded.emissive)shaded.emissive.set(0x000000);
+              if('metalness' in shaded)shaded.metalness=.75;
+              if('roughness' in shaded)shaded.roughness=.3;
+              shaded.needsUpdate=true;
+              return shaded;
+            });
+            node.material=Array.isArray(node.material)?shadedMaterials:shadedMaterials[0];
+            const position=node.geometry.getAttribute('position');
+            const geometryIndexCount=node.geometry.index?.count||position?.count||0;
+            if(geometryIndexCount<=MAX_OUTLINE_INDICES){
+              const outline=new THREE.LineSegments(new THREE.EdgesGeometry(node.geometry,15),outlineMaterial);
+              outline.scale.setScalar(1.001);
+              node.add(outline);
+              outlines.push(outline);
+            }
+          }
+        }catch(error){
+          console.error(`Could not prepare ${botName} 3D model.`,error);
+          container.dataset.modelState='error';
+          const status=container.querySelector('.model-status');
+          if(status){status.setAttribute('role','alert');status.textContent=`Could not prepare ${botName}’s 3D model.`}
+          cleanup();
+          return;
+        }
+        if(meshIndex<meshNodes.length){
+          frame=requestAnimationFrame(prepareBatch);
+          return;
+        }
+        container.dataset.modelState='loaded';
+        container.dataset.modelLabel=`${botName} · 3D CAD model`;
+        container.querySelector('.model-status')?.remove();
+        const hint=document.createElement('span');
+        hint.className='model-hint';
+        hint.textContent='Drag to rotate · scroll to zoom';
+        hint.setAttribute('aria-hidden','true');
+        container.appendChild(hint);
+        let lastRender=0;
+        const draw=now=>{
+          if(disposed)return;
+          const elapsed=lastRender?now-lastRender:1000/60;
+          lastRender=now;
+          if(rotationPivot)rotationPivot.rotation.y+=.003*(elapsed/(1000/60));
+          controls?.update(elapsed/1000);
+          renderer.render(scene,camera);
+          frame=requestAnimationFrame(draw);
+        };
+        draw();
       };
-      draw();
-    },undefined,()=>{
+      prepareBatch();
+    },event=>{
+      if(disposed)return;
+      const status=container.querySelector('.model-status');
+      if(status&&event.total>0){
+        const percent=Math.round(event.loaded/event.total*100);
+        status.textContent=`Loading ${botName} CAD model… ${percent}%`;
+      }
+    },()=>{
       if(disposed)return;
       container.dataset.modelState='error';
       container.querySelector('.model-status')?.remove();
@@ -228,19 +265,11 @@ const fleetQuotes=[
   'From first sketch to first drive: progress is built one iteration at a time.'
 ];
 let lastFleetQuote=-1;
-function fill(i){const b=BOTS[i],images=b.images;clearInterval(fleetSlideTimer);info.innerHTML=String(i+1).padStart(2,'0')+' / '+String(N).padStart(2,'0')+'<span class="rhint"> · drag, click or ↑↓ to roll</span>';
- const multi=images.length>1;
- side.innerHTML=`<div class="rs-slideshow"><img class="rs-image" src="${images[0]}" alt="${b.n}" loading="lazy" decoding="async">${multi?`<button class="rs-slide-btn prev" type="button" aria-label="Previous ${b.n} photo">‹</button><button class="rs-slide-btn next" type="button" aria-label="Next ${b.n} photo">›</button><span class="rs-slide-count" aria-live="polite">01 / ${String(images.length).padStart(2,'0')}</span>`:''}</div><div class="rs-body"><h3>${b.n}</h3><div class="specs">${specRows(b.s.slice(0,3))}</div><a class="btn p" href="#/bot/${i+1}">Open ${b.n} profile ↗</a></div>`;
+function fill(i){const b=BOTS[i];info.innerHTML=String(i+1).padStart(2,'0')+' / '+String(N).padStart(2,'0')+'<span class="rhint"> · drag, click or ↑↓ to roll</span>';
+ side.innerHTML=`<div class="rs-photo"><img class="rs-image" src="${b.image}" alt="${b.n}" loading="lazy" decoding="async"></div><div class="rs-body"><h3>${b.n}</h3><div class="specs">${specRows(b.s.slice(0,3))}</div><a class="btn p" href="#/bot/${i+1}">Open ${b.n} profile ↗</a></div>`;
  const quoteIndex=(()=>{let next;do{next=Math.floor(Math.random()*fleetQuotes.length)}while(next===lastFleetQuote);lastFleetQuote=next;return next})();
  const quote=document.getElementById('fleetQuote');quote.querySelector('p').textContent=fleetQuotes[quoteIndex];quote.querySelector('cite').textContent='FIELD NOTE '+String(quoteIndex+1).padStart(2,'0');
- if(multi){
-  const image=side.querySelector('.rs-image'),counter=side.querySelector('.rs-slide-count');
-  let photoIndex=0;
-  const showPhoto=step=>{photoIndex=(photoIndex+step+images.length)%images.length;image.classList.add('changing');window.setTimeout(()=>{image.src=images[photoIndex];image.alt=`${b.n} photo ${photoIndex+1}`;image.classList.remove('changing')},180);counter.textContent=`${String(photoIndex+1).padStart(2,'0')} / ${String(images.length).padStart(2,'0')}`};
-  side.querySelector('.rs-slide-btn.prev').addEventListener('click',()=>showPhoto(-1));
-  side.querySelector('.rs-slide-btn.next').addEventListener('click',()=>showPhoto(1));
-  fleetSlideTimer=window.setInterval(()=>showPhoto(1),4500);
- }}
+}
 function render(){
  rows.forEach((el,i)=>{const a=wrap((pos-i)*STEP);
   if(Math.abs(a)>80){el.style.visibility='hidden';el.classList.remove('on');return}

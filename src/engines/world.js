@@ -128,7 +128,7 @@ const hud=document.createElement('div');hud.id='hud';hud.style.cssText='position
 let p=0,tp=0,ptr=[0,0],last=0,dist=0;const cp=new T.Vector3(),up=new T.Vector3(0,1,0);let first=1;
 addEventListener('pointermove',e=>{ptr=[e.clientX/innerWidth-.5,e.clientY/innerHeight-.5]});
 function rz(){rn.setSize(innerWidth,innerHeight,false);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix()}rz();addEventListener('resize',rz);
-let maxS=1,mainS=1;const subPg=()=>['t','b','pg'].some(c=>document.body.classList.contains(c));const rs=()=>{maxS=Math.max(1,document.documentElement.scrollHeight-innerHeight);if(!subPg())mainS=maxS};rs();addEventListener('resize',rs);addEventListener('load',rs);if(window.ResizeObserver)new ResizeObserver(rs).observe(document.body);
+let maxS=1,mainS=1,lastRender=0;const subPg=()=>['t','b','pg'].some(c=>document.body.classList.contains(c));const rs=()=>{maxS=Math.max(1,document.documentElement.scrollHeight-innerHeight);if(!subPg())mainS=maxS};rs();addEventListener('resize',rs);addEventListener('load',rs);if(window.ResizeObserver)new ResizeObserver(rs).observe(document.body);
 function frame(ms){const dt=Math.min(.05,(ms-last)/1000||.016);last=ms;
  tp=clamp(scrollY/(subPg()?Math.max(mainS,maxS,innerHeight*5):maxS),0,1)*.985;const before=p;p+=(tp-p)*(still?1:1-Math.exp(-dt*(subPg()?1.4:3.7)));
  const pt=path.getPointAt(p),tn=path.getTangentAt(p);rv.position.copy(pt);rv.position.y=.02+Math.sin(ms*.004)*.01*(Math.abs(p-before)>1e-5);rv.rotation.y=Math.atan2(-tn.x,-tn.z);
@@ -141,7 +141,7 @@ function frame(ms){const dt=Math.min(.05,(ms-last)/1000||.016);last=ms;
  if(first){cam.position.copy(cp);first=0}else cam.position.lerp(cp,still?1:1-Math.exp(-dt*4.4));
  {const lk=new T.Vector3(pt.x+tn.x*2.5,pt.y+1.1,pt.z+tn.z*2.5);if(INTRO.on)INTRO.step(ms,cp,lk);else cam.lookAt(lk)}
  hud.textContent='Odometer '+String(Math.round(p*LEN)).padStart(4,'0')+' m';
- rn.render(sc,cam);if(!still)requestAnimationFrame(frame)}
+ if(!document.body.classList.contains('b')||ms-lastRender>=1000/30){rn.render(sc,cam);lastRender=ms}if(!still)requestAnimationFrame(frame)}
 requestAnimationFrame(frame);if(still)addEventListener('scroll',()=>frame(performance.now()),{passive:true});
 })();
 }

@@ -1,12 +1,8 @@
 import ashwiniImage from '../assets/projects/ashwini_3.jpeg';
-import ashwiniAltImage from '../assets/projects/ashwini_1.jpeg';
-import ashwiniDetailImage from '../assets/projects/ashwini_2.jpeg';
 import avniImage from '../assets/projects/avni_1.jpeg';
 import valkyrieImage from '../assets/projects/valkyrie_2.jpg';
-import valkyrieAltImage from '../assets/projects/valkyrie_1.png';
 import agniImage from '../assets/projects/agni.jpg';
 import centaurImage from '../assets/projects/centaur_2.png';
-import centaurAltImage from '../assets/projects/centaur_1.png';
 import airawatImage from '../assets/projects/airawat.jpg';
 import kurmImage from '../assets/projects/KURM.JPEG';
 
@@ -15,7 +11,7 @@ export const BOTS = [
     n: 'Ashwini',
     platform: 'UGV',
     focus: 'Autonomous navigation',
-    images: [ashwiniImage, ashwiniAltImage, ashwiniDetailImage],
+    image: ashwiniImage,
     d: 'Ashwini is a compact, three-wheeled differential-drive UGV developed for IGVC 2025 AutoNav. Its 3030 aluminium T-slot chassis carries an RPLiDAR A3M1, Intel RealSense D455 and RTK GPS. The published autonomy stack uses ROS Noetic, EKF sensor fusion and move_base; a LoRa wireless emergency stop is listed with a 1 km range.',
     s: [
       'Competition — IGVC 2025 · AutoNav',
@@ -32,7 +28,7 @@ export const BOTS = [
     n: 'Avni',
     platform: 'UGV',
     focus: 'UGVC · autonomy',
-    images: [avniImage],
+    image: avniImage,
     d: 'Avni is the team’s flagship UGV rover for the Unmanned Ground Vehicle Challenge (UGVC). Its published profile highlights custom suspension kinematics, a decentralized ROS 2-based autonomy architecture, and an integrated sensing and computing payload. Component-level specifications have not been published.',
     s: [
       'Competition — Unmanned Ground Vehicle Challenge',
@@ -46,7 +42,7 @@ export const BOTS = [
     n: 'Valkyrie',
     platform: 'UAV',
     focus: 'Perception · sensing',
-    images: [valkyrieImage, valkyrieAltImage],
+    image: valkyrieImage,
     d: 'Valkyrie is a manually operated UAV built around environmental sensing and real-time situational awareness. Its documented payload measures temperature, humidity and gas concentration, and includes separate FPV and imaging cameras. Sensor readings are sent to a ground station over telemetry for live monitoring and later analysis.',
     s: [
       'Platform — Manually operated UAV',
@@ -60,7 +56,7 @@ export const BOTS = [
     n: 'Agni',
     platform: 'UGV',
     focus: 'Navigation · sensor fusion',
-    images: [agniImage],
+    image: agniImage,
     d: 'AGNI (Autonomous Ground-Based Navigation Inspector) is an autonomous ground vehicle designed for unstructured and GPS-denied environments. Its published research describes an inverted-V suspension, adaptive sensor fusion, and a navigation stack combining LiDAR, stereo vision, GPS-IMU and wheel encoders with Dynamic Window Approach obstacle avoidance and YOLO-based object detection.',
     s: [
       'Platform — Autonomous ground vehicle',
@@ -76,7 +72,7 @@ export const BOTS = [
     n: 'Centaur',
     platform: 'UGV',
     focus: 'First autonomous rover',
-    images: [centaurImage, centaurAltImage],
+    image: centaurImage,
     d: 'Centaur was the team’s first autonomous rover and marked the beginning of UGV-DTU’s ground-robotics work. The available profile describes it as an early step in self-driving robotics and mechanical development; detailed hardware and competition records are not yet published.',
     s: [
       'Platform — Autonomous ground rover',
@@ -88,7 +84,7 @@ export const BOTS = [
     n: 'Airawat',
     platform: 'UGV',
     focus: 'Vision · localization',
-    images: [airawatImage],
+    image: airawatImage,
     d: 'Airawat advanced the team’s vehicle development with a focus on computer vision and localization. Its available profile describes this generation as emphasizing stability and reliability. Specific sensors, drive configuration and competition history have not been published.',
     s: [
       'Platform — Ground vehicle',
@@ -100,7 +96,7 @@ export const BOTS = [
     n: 'Kurm',
     platform: 'UGV',
     focus: 'Planning · perception · RTK-GPS',
-    images: [kurmImage],
+    image: kurmImage,
     d: 'Kurm continued the team’s ground-vehicle development with refinements to path planning, perception and RTK-GPS precision. The available profile highlights operation across complex terrain; additional performance and hardware specifications have not been published.',
     s: [
       'Platform — Ground vehicle',
