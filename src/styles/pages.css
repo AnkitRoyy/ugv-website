@@ -149,6 +149,7 @@ html[data-theme="light"] .theme-btn{background:rgba(255,255,255,.7)}
 html[data-theme="light"] .theme-btn:hover{background:#fff;border-color:var(--b3)}
 html[data-theme="light"] .theme-btn .ico-sun{opacity:0;transform:rotate(70deg) scale(.5)}
 html[data-theme="light"] .theme-btn .ico-moon{opacity:1;transform:none}
+html[data-theme="light"] .brand span,html[data-theme="light"] .brand-word b span{color:var(--t1)}
 
 /* backdrop + sections */
 html[data-theme="light"] body::before{background:radial-gradient(60% 50% at 10% 6%,rgba(255,106,43,.14),transparent 62%),radial-gradient(55% 50% at 92% 88%,rgba(92,124,255,.14),transparent 62%),radial-gradient(ellipse at 50% 42%,rgba(233,237,243,.2),rgba(233,237,243,.55) 100%)}

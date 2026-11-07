@@ -16,10 +16,7 @@ import unnatKrishnaImg from "../assets/team/unnat_krishna.jpeg";
 import anmolBhardwajImg from "../assets/team/anmol_bhardwaj.png";
 import pranjalGuptaImg from "../assets/team/pranjal_gupta.png";
 import bhavyaJindalImg from "../assets/team/bhavya_jindal.png";
-import dhairyaAnejaImg from "../assets/team/dhairya_aneja.jpeg";
 import tanishqKhandelwalImg from "../assets/team/tanishq_khandelwal.jpeg";
-import dhruvRastogiImg from "../assets/team/dhruv_rastogi.jpeg";
-import aryanMunjalImg from "../assets/team/aryan_munjal.jpeg";
 import lakshayaVermaImg from "../assets/team/lakshaya_verma.jpeg";
 import syedWaliMehdiImg from "../assets/team/syed_wali_mehdi.jpeg";
 import priyanshuGrewalImg from "../assets/team/priyanshu_grewal.jpeg";
@@ -27,17 +24,13 @@ import saubhagyaJaiswalImg from "../assets/team/saubhagya_jaiswal.jpeg";
 
 // Mechanical Member Images
 import mohdShahnawazImg from "../assets/team/mohd_shahnawaz.jpeg";
-import riaSolankiImg from "../assets/team/ria_solanki.jpeg";
 import manishKumarImg from "../assets/team/manish_kumar.jpeg";
 import ashishBhattImg from "../assets/team/ashish_bhatt.jpeg";
-import himanshuPrajapatiImg from "../assets/team/himanshu_prajapati.jpeg";
-import abhinavAgarwalImg from "../assets/team/abhinav_agarwal.jpeg";
 import sameerTandonImg from "../assets/team/sameer_tandon.jpeg";
 import sbNarayananImg from "../assets/team/sb_narayanan.jpeg";
 import aayushKumarMechImg from "../assets/team/aayush_kumar_mech.jpeg";
 import shreshtaSrivastavaImg from "../assets/team/shreshta_srivastava.jpeg";
 import aarnavKansalImg from "../assets/team/aarnav_kansal.jpeg";
-import ishaanYadavImg from "../assets/team/ishaan_yadav.jpeg";
 
 // Research and Outreach Member Images
 import tanishqKhannaImg from "../assets/team/tanishq_khanna.jpeg";
@@ -49,7 +42,6 @@ import piyushImg from "../assets/team/piyush.png";
 import bhanupriyaImg from "../assets/team/bhanupriya.jpeg";
 import himanshuKumarSinghImg from "../assets/team/himanshu_kumar_singh.jpeg";
 import preetBislaImg from "../assets/team/preet_bisla.jpeg";
-import anshDahiyaImg from "../assets/team/ansh_dahiya.jpeg";
 import akashSheejithImg from "../assets/team/akash_sheejith.jpeg";
 import peeyushRajBansalImg from "../assets/team/peeyush_raj_bansal.jpeg";
 import himanshuBaghelImg from "../assets/team/himanshu_baghel.jpeg";
@@ -63,8 +55,6 @@ import harshitImg from "../assets/team/harshit.jpeg";
 import arpitImg from "../assets/team/arpit.jpeg";
 import adityaKumarImg from "../assets/team/aditya_kumar.png";
 import omiShouryaImg from "../assets/team/omi_shourya.jpeg";
-import bhavyaGargImg from "../assets/team/bhavya_garg.jpeg";
-import laxmanBhusalImg from "../assets/team/laxman_bhusal.jpeg";
 import avinashKhalkhoImg from "../assets/team/avinash_khalkho.jpeg";
 import saurabhKumarImg from "../assets/team/saurabh_kumar.jpeg";
 

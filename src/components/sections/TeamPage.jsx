@@ -11,7 +11,7 @@ export default function TeamPage() {
     <a href="#/research" data-dept="research">04 Research</a>
   </div>
 </div>
-<div className="mono" id="tk"></div><h2 className="t" id="tt" style={{"font":"500 clamp(40px,6vw,76px)/1 var(--sans)","letterSpacing":"-.05em","margin":"16px 0 56px"}}></h2>
+<div className="mono" id="tk"></div><h2 className="t" id="tt" aria-live="polite" style={{"font":"500 clamp(40px,6vw,76px)/1 var(--sans)","letterSpacing":"-.05em","margin":"16px 0 56px"}}>Team</h2>
 <div className="gv"><div className="roster-count"><span className="mono">DEPARTMENT ROSTER / ALL PERSONNEL</span><strong>HEADS + MEMBERS IN ONE VIEW</strong></div><div className="mono" style={{"marginBottom":"18px"}}>Team heads</div><div className="heads" id="hd"></div>
 <div className="mono" style={{"marginBottom":"18px"}}>Members</div><div className="mem" id="mm"></div></div>
 <div className="cv"><div className="car-stage" id="car-stage"></div>

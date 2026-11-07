@@ -6,9 +6,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 const activeModelCleanups=new Set();
-let previewModelCleanup;
-
-function cubePreview(){return `<div class="cube-scene" aria-label="Rotating placeholder CAD cube"><div class="cube">${['front','back','right','left','top','bottom'].map(face=>`<i class="cube-face ${face}"></i>`).join('')}</div></div>`;}
+let fleetSlideTimer;
 
 export function disposeBotModel(){
   activeModelCleanups.forEach(cleanup=>cleanup());
@@ -195,7 +193,7 @@ function showBotModel(container,botName,{compact=false}={}){
 export function showBot(i){
   const b=BOTS[i],n=BOTS.length;
   disposeBotModel();
-  document.getElementById('bot-k').textContent='Vehicle 0'+(i+1)+(b.y&&b.y!=='TBD'?' — '+b.y:'');
+  document.getElementById('bot-k').textContent=`Vehicle ${String(i+1).padStart(2,'0')} · ${b.platform}`;
   document.getElementById('bot-t').textContent=b.n;
   const hero=document.getElementById('bot-hero');
   hero.dataset.bot=b.n;
@@ -214,16 +212,35 @@ const N=BOTS.length,STEP=34,R=130,PITCH=72,PER=N*STEP;
 const drum=document.getElementById('drum'),cyl=document.getElementById('drumCyl'),side=document.getElementById('rollSide'),info=document.getElementById('rInfo');
 const wrap=a=>((a+PER/2)%PER+PER)%PER-PER/2;
 cyl.style.transform='translateZ('+(-R)+'px)';
-cyl.innerHTML=BOTS.map((b,i)=>`<a class="drum-row" href="#/bot/${i+1}" data-i="${i}" draggable="false"><span class="n">0${i+1}</span><span class="v">${b.n}</span><span class="y">${b.y}</span><span class="d">${b.s[0].replace(/^Drive — /,'')}</span><span class="a">↗</span></a>`).join('');
+cyl.innerHTML=BOTS.map((b,i)=>`<a class="drum-row" href="#/bot/${i+1}" data-i="${i}" draggable="false"><span class="n">0${i+1}</span><span class="v">${b.n}</span><span class="y">${b.platform}</span><span class="d">${b.focus}</span><span class="a">↗</span></a>`).join('');
 const rows=[...cyl.children];
 let pos=2.4,target=0,sel=-1,raf=0,drag=null,suppress=false,started=false,lock=0,engaged=false;
 const mod=k=>((k%N)+N)%N;
 const near=i=>{let d=mod(i-mod(Math.round(target)));if(d>N/2)d-=N;return d};
-function fill(i){const b=BOTS[i];previewModelCleanup?.();previewModelCleanup=undefined;info.innerHTML=String(i+1).padStart(2,'0')+' / '+String(N).padStart(2,'0')+'<span class="rhint"> · drag, click or ↑↓ to roll</span>';
- const hasModel=b.n==='Avni'||b.n==='Ashwini'||b.n==='Valkyrie';
- const preview=hasModel?`<div class="bph model-preview" aria-label="${b.n} 3D model preview"></div>`:`<div class="bph">${cubePreview()}</div>`;
- side.innerHTML=`${preview}<div class="rs-body"><span class="mono">UGV platform · ${b.y}</span><h3>${b.n}</h3><div class="specs">${specRows(b.s)}</div><a class="btn p" href="#/bot/${i+1}">Open ${b.n} ↗</a></div>`;
- if(hasModel)previewModelCleanup=showBotModel(side.querySelector('.model-preview'),b.n,{compact:true})}
+const fleetQuotes=[
+  'Build it, test it, break it, learn from it, build it better.',
+  'A robot is only as good as the team that keeps asking why.',
+  'Measure twice. Machine once. Test until it works everywhere.',
+  'Every sensor tells a story; engineering is learning how to listen.',
+  'The best route is the one your robot can safely find for itself.',
+  'Small improvements in the workshop become big moments in the field.',
+  'Good robotics is where curious minds meet careful hands.',
+  'From first sketch to first drive: progress is built one iteration at a time.'
+];
+let lastFleetQuote=-1;
+function fill(i){const b=BOTS[i],images=b.images;clearInterval(fleetSlideTimer);info.innerHTML=String(i+1).padStart(2,'0')+' / '+String(N).padStart(2,'0')+'<span class="rhint"> · drag, click or ↑↓ to roll</span>';
+ const multi=images.length>1;
+ side.innerHTML=`<div class="rs-slideshow"><img class="rs-image" src="${images[0]}" alt="${b.n}" loading="lazy" decoding="async">${multi?`<button class="rs-slide-btn prev" type="button" aria-label="Previous ${b.n} photo">‹</button><button class="rs-slide-btn next" type="button" aria-label="Next ${b.n} photo">›</button><span class="rs-slide-count" aria-live="polite">01 / ${String(images.length).padStart(2,'0')}</span>`:''}</div><div class="rs-body"><h3>${b.n}</h3><div class="specs">${specRows(b.s.slice(0,3))}</div><a class="btn p" href="#/bot/${i+1}">Open ${b.n} profile ↗</a></div>`;
+ const quoteIndex=(()=>{let next;do{next=Math.floor(Math.random()*fleetQuotes.length)}while(next===lastFleetQuote);lastFleetQuote=next;return next})();
+ const quote=document.getElementById('fleetQuote');quote.querySelector('p').textContent=fleetQuotes[quoteIndex];quote.querySelector('cite').textContent='FIELD NOTE '+String(quoteIndex+1).padStart(2,'0');
+ if(multi){
+  const image=side.querySelector('.rs-image'),counter=side.querySelector('.rs-slide-count');
+  let photoIndex=0;
+  const showPhoto=step=>{photoIndex=(photoIndex+step+images.length)%images.length;image.classList.add('changing');window.setTimeout(()=>{image.src=images[photoIndex];image.alt=`${b.n} photo ${photoIndex+1}`;image.classList.remove('changing')},180);counter.textContent=`${String(photoIndex+1).padStart(2,'0')} / ${String(images.length).padStart(2,'0')}`};
+  side.querySelector('.rs-slide-btn.prev').addEventListener('click',()=>showPhoto(-1));
+  side.querySelector('.rs-slide-btn.next').addEventListener('click',()=>showPhoto(1));
+  fleetSlideTimer=window.setInterval(()=>showPhoto(1),4500);
+ }}
 function render(){
  rows.forEach((el,i)=>{const a=wrap((pos-i)*STEP);
   if(Math.abs(a)>80){el.style.visibility='hidden';el.classList.remove('on');return}
