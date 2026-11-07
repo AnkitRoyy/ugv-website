@@ -41,10 +41,10 @@ export default function Teams() {
     
     <a href="#/research" className="w-slice bottom" data-dept="research">
       <div className="w-node">
+        <span className="mono">04</span>
+        <div className="w-bust"></div>
         <span className="w-title">Research</span>
         <span className="w-head-name">Head — Research</span>
-        <div className="w-bust"></div>
-        <span className="mono">04</span>
       </div>
     </a>
 

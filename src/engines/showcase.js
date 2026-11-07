@@ -43,12 +43,15 @@ loadProjectModel('/ashwini.glb',0,'Ashwini');
 loadProjectModel('/avni.glb',1,'Avni');
 function rz(){const k=document.querySelector('#show .stick'),w=k.clientWidth||innerWidth,h=k.clientHeight||innerHeight;R.setSize(w,h,false);C.aspect=w/h;C.position.set(w<800?7:5.2,w<800?4.4:3.4,w<800?8:6);C.lookAt(0,w<800?-.8:.9,0);MD.forEach(m=>{m.position.x=w<800?0:-1.4});C.updateProjectionMatrix()}rz();addEventListener('resize',rz);
 const stk=document.querySelector('#show .stick'),sh=document.getElementById('show'),pn=document.getElementById('pn'),rb=[...document.querySelectorAll('#rail b')];let cur=-1,pp=0;
-let drag=null,dragYaw=0,dragPitch=0;
-gl.addEventListener('pointerdown',event=>{if(event.button!==0)return;drag={x:event.clientX,y:event.clientY};gl.setPointerCapture(event.pointerId)});
-gl.addEventListener('pointermove',event=>{if(!drag)return;dragYaw+=(event.clientX-drag.x)*.01;dragPitch=cl(dragPitch+(event.clientY-drag.y)*.01,-.55,.55);drag.x=event.clientX;drag.y=event.clientY});
-gl.addEventListener('pointerup',()=>{drag=null});
-gl.addEventListener('pointercancel',()=>{drag=null});
-function setP(i){cur=i;const p=PR[i];document.getElementById('lab').textContent=`Drag to rotate · scroll to advance · ${i+1} / 3 projects · ${i===0?'Ashwini 3D model':i===1?'Avni 3D model':'illustrative model'}`;pk.textContent=p.k;pt.textContent=p.t;pd.textContent=p.d;ps.innerHTML=specRows(p.s);MD.forEach((m,j)=>m.visible=j===i)}
+let drag=null,yawOffset=0;
+gl.style.cursor='grab';
+gl.addEventListener('pointerdown',event=>{if(event.button!==0)return;drag={x:event.clientX};gl.setPointerCapture(event.pointerId);gl.style.cursor='grabbing'});
+gl.addEventListener('pointermove',event=>{if(!drag)return;yawOffset+=(event.clientX-drag.x)*.01;drag.x=event.clientX});
+function endDrag(){drag=null;gl.style.cursor='grab'}
+gl.addEventListener('pointerup',endDrag);
+gl.addEventListener('pointercancel',endDrag);
+gl.addEventListener('lostpointercapture',endDrag);
+function setP(i){cur=i;const p=PR[i];document.getElementById('lab').textContent=`Drag horizontally to rotate · scroll to advance · ${i+1} / 3 projects · ${i===0?'Ashwini 3D model':i===1?'Avni 3D model':'illustrative model'}`;pk.textContent=p.k;pt.textContent=p.t;pd.textContent=p.d;ps.innerHTML=specRows(p.s);MD.forEach((m,j)=>m.visible=j===i)}
 let lt=0,ee=0,le=-1,held=0;
 (function loop(t){const dt=Math.min(.05,Math.max(.001,(t-lt)/1000||.016));lt=t;
 const r=sh.getBoundingClientRect();const p=cl((84-r.top)/(r.height-stk.offsetHeight),0,.9999);
@@ -59,5 +62,5 @@ const rvl=CALM?1:cl((innerHeight*.9-r.top)/(innerHeight*.45),0,1);ee+=(rvl-ee)*(
 const e=sst(ee);if(e!==le){le=e;if(e>=1){stk.style.opacity='';stk.style.transform=''}else{stk.style.opacity=e.toFixed(3);stk.style.transform=`translate3d(0,${((1-e)*44).toFixed(1)}px,0) scale(${(.97+.03*e).toFixed(4)})`}}
 // first and last project hold full strength at the ends of the runway; only the hand-offs fade
 const o=sst(cl(Math.min(i===0?1:l/.22,i===2?1:(1-l)/.22),0,1));pn.style.opacity=o;MD[i].scale.setScalar(Math.max(.001,o));pn.style.transform=`translateY(calc(-50% + ${(1-o)*26}px))`;rb.forEach((b,j)=>b.style.setProperty('--f',(j<i?100:j===i?l*100:0)+'%'));
-MD[i].rotation.y=pp*Math.PI*5+t*.00012+dragYaw;MD[i].position.y=.06*Math.sin(t*.001);sweep.intensity=(i===0||i===1) ? .65 : 0;sweep.position.set(Math.cos(t*.0007)*2.4,2+Math.sin(t*.0008)*.35,Math.sin(t*.0007)*2.4);if(i===0){MD[i].rotation.x=dragPitch}else if(i===1){MD[i].rotation.x=.018*Math.sin(t*.0008);MD[i].rotation.z=.025*Math.sin(t*.0011)}else{MD[i].rotation.x=0;MD[i].rotation.z=0}if(r.bottom>0&&r.top<innerHeight)R.render(S,C);requestAnimationFrame(loop)})(0);
+MD[i].rotation.y=pp*Math.PI*5+t*.00012+yawOffset;MD[i].position.y=.06*Math.sin(t*.001);sweep.intensity=(i===0||i===1) ? .65 : 0;sweep.position.set(Math.cos(t*.0007)*2.4,2+Math.sin(t*.0008)*.35,Math.sin(t*.0007)*2.4);if(i===0||i===1){MD[i].rotation.x=.018*Math.sin(t*.0008);MD[i].rotation.z=.025*Math.sin(t*.0011)}else{MD[i].rotation.x=0;MD[i].rotation.z=0}if(r.bottom>0&&r.top<innerHeight)R.render(S,C);requestAnimationFrame(loop)})(0);
 }
