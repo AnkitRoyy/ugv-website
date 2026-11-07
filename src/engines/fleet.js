@@ -3,6 +3,7 @@ import { BOTS } from '../data/vehicles';
 import { specRows } from '../lib/specs';
 import THREE from '../lib/threeLegacy';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 const activeModelCleanups=new Set();
 let previewModelCleanup;
@@ -19,7 +20,11 @@ function showBotModel(container,botName,{compact=false}={}){
   container.dataset.modelState='loading';
   container.innerHTML=`<div class="model-status" role="status">Loading ${botName} CAD model…</div>`;
 
+<<<<<<< HEAD
   let renderer,frame,resizeObserver,disposed=false,model,rotationPivot,grid,cleanup;
+=======
+  let renderer,controls,frame,resizeObserver,disposed=false,model,grid,cleanup;
+>>>>>>> 143b5658c69c80055c23cb19998d4bf9791495e5
   const sourceMaterials=new Set();
   const scene=new THREE.Scene();
   if(!compact)scene.background=new THREE.Color(0x171112);
@@ -46,6 +51,7 @@ function showBotModel(container,botName,{compact=false}={}){
     disposed=true;
     cancelAnimationFrame(frame);
     resizeObserver?.disconnect();
+    controls?.dispose();
     renderer?.dispose();
     if(model)model.traverse(node=>{
       if(node.isMesh){
@@ -74,6 +80,14 @@ function showBotModel(container,botName,{compact=false}={}){
     renderer.toneMappingExposure=.85;
     renderer.domElement.setAttribute('aria-label',`Interactive 3D model of ${botName}`);
     container.appendChild(renderer.domElement);
+    controls=new OrbitControls(camera,renderer.domElement);
+    controls.enableDamping=true;
+    controls.dampingFactor=.06;
+    controls.enablePan=false;
+    controls.autoRotate=true;
+    controls.autoRotateSpeed=.8;
+    controls.minDistance=2;
+    controls.maxDistance=20;
 
     const resize=()=>{
       const width=container.clientWidth,height=container.clientHeight;
@@ -143,9 +157,18 @@ function showBotModel(container,botName,{compact=false}={}){
       container.dataset.modelState='loaded';
       container.dataset.modelLabel=`${botName} · 3D CAD model`;
       container.querySelector('.model-status')?.remove();
+      const hint=document.createElement('span');
+      hint.className='model-hint';
+      hint.textContent='Drag to rotate · scroll to zoom';
+      hint.setAttribute('aria-hidden','true');
+      container.appendChild(hint);
       const draw=()=>{
         if(disposed)return;
+<<<<<<< HEAD
         rotationPivot.rotation.y+=.003;
+=======
+        controls.update();
+>>>>>>> 143b5658c69c80055c23cb19998d4bf9791495e5
         renderer.render(scene,camera);
         frame=requestAnimationFrame(draw);
       };
@@ -197,10 +220,16 @@ let pos=2.4,target=0,sel=-1,raf=0,drag=null,suppress=false,started=false,lock=0,
 const mod=k=>((k%N)+N)%N;
 const near=i=>{let d=mod(i-mod(Math.round(target)));if(d>N/2)d-=N;return d};
 function fill(i){const b=BOTS[i];previewModelCleanup?.();previewModelCleanup=undefined;info.innerHTML=String(i+1).padStart(2,'0')+' / '+String(N).padStart(2,'0')+'<span class="rhint"> · drag, click or ↑↓ to roll</span>';
+<<<<<<< HEAD
  const hasModel=b.n==='Avni'||b.n==='Ashwini';
  const preview=hasModel?`<div class="bph model-preview" aria-label="${b.n} 3D model preview"></div>`:`<div class="bph">${cubePreview()}</div>`;
  side.innerHTML=`${preview}<div class="rs-body"><span class="mono">UGV platform · ${b.y}</span><h3>${b.n}</h3><div class="specs">${specRows(b.s)}</div><a class="btn p" href="#/bot/${i+1}">Open ${b.n} ↗</a></div>`;
  if(hasModel)previewModelCleanup=showBotModel(side.querySelector('.model-preview'),b.n,{compact:true})}
+=======
+ const preview=b.n==='Ashwini'||b.n==='Avni'?`<div class="bph model-preview" aria-label="${b.n} 3D model preview"></div>`:`<div class="bph">${cubePreview()}</div>`;
+ side.innerHTML=`${preview}<div class="rs-body"><span class="mono">UGV platform · ${b.y}</span><h3>${b.n}</h3><div class="specs">${specRows(b.s)}</div><a class="btn p" href="#/bot/${i+1}">Open ${b.n} ↗</a></div>`;
+ if(b.n==='Ashwini'||b.n==='Avni')previewModelCleanup=showBotModel(side.querySelector('.model-preview'),b.n,{compact:true})}
+>>>>>>> 143b5658c69c80055c23cb19998d4bf9791495e5
 function render(){
  rows.forEach((el,i)=>{const a=wrap((pos-i)*STEP);
   if(Math.abs(a)>80){el.style.visibility='hidden';el.classList.remove('on');return}
