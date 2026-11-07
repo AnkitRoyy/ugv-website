@@ -25,8 +25,8 @@ export default function Footer() {
 
         <div className="sf-contact">
           <div className="sf-lines">
-            <a className="sf-line" href="tel:+919993400267" aria-label="Call +91 9993400267">
-              <FiPhone aria-hidden="true" /> <span>+91 9993400267</span>
+            <a className="sf-line" href="tel:+917042011047" aria-label="Call +91 70420 11047">
+              <FiPhone aria-hidden="true" /> <span>+91 70420 11047</span>
             </a>
             <a className="sf-line" href="mailto:ugv@dtu.ac.in" aria-label="Email ugv@dtu.ac.in">
               <FiMail aria-hidden="true" /> <span>ugv@dtu.ac.in</span>
@@ -35,7 +35,7 @@ export default function Footer() {
 
           <div className="sf-social">
             <a
-              href="https://www.instagram.com/ugv_dtu/"
+              href="https://www.instagram.com/ugvdtu/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Open UGV-DTU Instagram profile in a new tab"

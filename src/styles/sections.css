@@ -60,6 +60,8 @@ nav .l a.on{color:var(--t1);background:rgba(255,255,255,.13);box-shadow:inset 0 
 .blog-intro .mono{color:var(--acc)!important;background:none;border:0;padding:0;margin:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
 /* project showcase */
 #show .stick{background:radial-gradient(circle at 36% 64%,rgba(255,106,43,.13),transparent 52%),radial-gradient(circle at 88% 12%,rgba(92,124,255,.12),transparent 50%),rgba(8,10,14,.66);border:1px solid var(--b2);border-radius:26px;box-shadow:var(--rim),0 40px 90px -36px rgba(0,0,0,.9)}
+#show #gl{touch-action:pan-y;cursor:grab}
+#show #gl:active{cursor:grabbing}
 .panel{background:rgba(16,18,26,.5);border:1px solid rgba(255,255,255,.18);border-radius:20px;box-shadow:var(--rim),0 24px 60px -24px rgba(0,0,0,.85);color:var(--t1)}
 .panel p{color:var(--t2)}
 .specs{border-top:1px solid var(--b2)}
