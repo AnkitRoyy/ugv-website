@@ -26,7 +26,8 @@ function showBotModel(container,botName,{compact=false}={}){
   const scene=new THREE.Scene();
   if(!compact)scene.background=new THREE.Color(0x171112);
   const camera=new THREE.PerspectiveCamera(35,1,.1,100);
-  camera.position.set(0,compact ? 0.65 : 1.1,compact ? 4.8 : 4.6);
+  const cameraHeight=botName==='Valkyrie'?(compact ? 2.5 : 3.2):(compact ? 0.65 : 1.1);
+  camera.position.set(0,cameraHeight,compact ? 4.8 : 4.6);
   camera.lookAt(0,0,0);
   scene.add(new THREE.AmbientLight(0xffffff,.8));
   const key=new THREE.DirectionalLight(0xffffff,2);
@@ -125,7 +126,12 @@ function showBotModel(container,botName,{compact=false}={}){
       const scale=2.4/largestDimension*framingScale;
       model.scale.setScalar(scale);
       model.position.copy(center).multiplyScalar(-scale);
-      if(grid)grid.position.y=(bounds.min.y-center.y)*scale-.015;
+      if(botName==='Valkyrie'){
+        model.rotation.x=-Math.PI/2;
+        const orientedBounds=new THREE.Box3().setFromObject(model);
+        model.position.y-=orientedBounds.min.y;
+      }
+      if(grid)grid.position.y=botName==='Valkyrie' ? -.015 : (bounds.min.y-center.y)*scale-.015;
       rotationPivot=new THREE.Group();
       rotationPivot.add(model);
       scene.add(rotationPivot);
@@ -214,7 +220,7 @@ let pos=2.4,target=0,sel=-1,raf=0,drag=null,suppress=false,started=false,lock=0,
 const mod=k=>((k%N)+N)%N;
 const near=i=>{let d=mod(i-mod(Math.round(target)));if(d>N/2)d-=N;return d};
 function fill(i){const b=BOTS[i];previewModelCleanup?.();previewModelCleanup=undefined;info.innerHTML=String(i+1).padStart(2,'0')+' / '+String(N).padStart(2,'0')+'<span class="rhint"> · drag, click or ↑↓ to roll</span>';
- const hasModel=b.n==='Avni'||b.n==='Ashwini';
+ const hasModel=b.n==='Avni'||b.n==='Ashwini'||b.n==='Valkyrie';
  const preview=hasModel?`<div class="bph model-preview" aria-label="${b.n} 3D model preview"></div>`:`<div class="bph">${cubePreview()}</div>`;
  side.innerHTML=`${preview}<div class="rs-body"><span class="mono">UGV platform · ${b.y}</span><h3>${b.n}</h3><div class="specs">${specRows(b.s)}</div><a class="btn p" href="#/bot/${i+1}">Open ${b.n} ↗</a></div>`;
  if(hasModel)previewModelCleanup=showBotModel(side.querySelector('.model-preview'),b.n,{compact:true})}

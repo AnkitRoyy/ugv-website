@@ -25,9 +25,16 @@ function loadProjectModel(file,index,name){
 new GLTFLoader().load(file,gltf=>{
 const fallback=MD[index],pivot=new THREE.Group(),model=gltf.scene,bounds=new THREE.Box3().setFromObject(model),size=bounds.getSize(new THREE.Vector3()),center=bounds.getCenter(new THREE.Vector3()),largest=Math.max(size.x,size.y,size.z);
 if(!largest){console.error(`${name} project model has no visible geometry.`);return}
-const scale=2.7/(size.y||largest);
+const scale=2.7/(index===2?largest:size.y||largest);
 model.scale.setScalar(scale);
+if(index===2){
+model.position.copy(center).multiplyScalar(-scale);
+model.rotation.x=-Math.PI/2;
+const orientedBounds=new THREE.Box3().setFromObject(model);
+model.position.y-=orientedBounds.min.y;
+}else{
 model.position.set(-center.x*scale,-bounds.min.y*scale,-center.z*scale);
+}
 model.traverse(node=>{if(!node.isMesh)return;
 const partSize=new THREE.Box3().setFromObject(node).getSize(new THREE.Vector3());
 const relativeSize=Math.max(partSize.x,partSize.y,partSize.z)/largest;
@@ -41,6 +48,7 @@ pivot.add(model);pivot.position.copy(fallback.position);pivot.visible=fallback.v
 }
 loadProjectModel('/ashwini.glb',0,'Ashwini');
 loadProjectModel('/avni.glb',1,'Avni');
+loadProjectModel('/valkyrie.glb',2,'Valkyrie');
 function rz(){const k=document.querySelector('#show .stick'),w=k.clientWidth||innerWidth,h=k.clientHeight||innerHeight;R.setSize(w,h,false);C.aspect=w/h;C.position.set(w<800?7:5.2,w<800?4.4:3.4,w<800?8:6);C.lookAt(0,w<800?-.8:.9,0);MD.forEach(m=>{m.position.x=w<800?0:-1.4});C.updateProjectionMatrix()}rz();addEventListener('resize',rz);
 const stk=document.querySelector('#show .stick'),sh=document.getElementById('show'),pn=document.getElementById('pn'),rb=[...document.querySelectorAll('#rail b')];let cur=-1,pp=0;
 let drag=null,yawOffset=0;
@@ -51,7 +59,7 @@ function endDrag(){drag=null;gl.style.cursor='grab'}
 gl.addEventListener('pointerup',endDrag);
 gl.addEventListener('pointercancel',endDrag);
 gl.addEventListener('lostpointercapture',endDrag);
-function setP(i){cur=i;const p=PR[i];document.getElementById('lab').textContent=`Drag horizontally to rotate · scroll to advance · ${i+1} / 3 projects · ${i===0?'Ashwini 3D model':i===1?'Avni 3D model':'illustrative model'}`;pk.textContent=p.k;pt.textContent=p.t;pd.textContent=p.d;ps.innerHTML=specRows(p.s);MD.forEach((m,j)=>m.visible=j===i)}
+function setP(i){cur=i;const p=PR[i];document.getElementById('lab').textContent=`Drag horizontally to rotate · scroll to advance · ${i+1} / 3 projects · ${i===0?'Ashwini 3D model':i===1?'Avni 3D model':'Valkyrie 3D model'}`;pk.textContent=p.k;pt.textContent=p.t;pd.textContent=p.d;ps.innerHTML=specRows(p.s);MD.forEach((m,j)=>m.visible=j===i)}
 let lt=0,ee=0,le=-1,held=0;
 (function loop(t){const dt=Math.min(.05,Math.max(.001,(t-lt)/1000||.016));lt=t;
 const r=sh.getBoundingClientRect();const p=cl((84-r.top)/(r.height-stk.offsetHeight),0,.9999);
