@@ -8,13 +8,13 @@ Priority: **P1** = visible placeholder, **P2** = unverified claim on the site, *
 
 ## 1. CAD / 3D models (P1)
 
-**Currently:** every vehicle page shows a rotating placeholder cube. The hero rover and the project showcase use simple procedural shapes, not real CAD. Only Avni has models in the repo (`public/avni*.glb`), and they are not wired into the site yet.
+**Currently:** Ashwini and Avni have CAD models wired into their vehicle pages, the fleet roller, and the project showcase. Other vehicle pages still show a rotating placeholder cube. The hero rover still uses a procedural shape.
 
 | # | Needed | Used for |
 |---|---|---|
-| 1 | Avni, Ashwini, Valkyrie, Agni, Centaur, Airawat, Kurm: one CAD model each | Fleet roller preview and each vehicle's page |
-| 2 | Ashwini (IGVC 2025), the IGVC 2023 platform, the MathWorks Minidrone | Project showcase (3 scroll scenes) |
-| 3 | A complete vehicle (suggest Avni or Ashwini) | Hero 3D rover, which is currently generic |
+| 1 | Valkyrie, Agni, Centaur, Airawat, Kurm: one CAD model each | Fleet roller preview and each vehicle's page |
+| 2 | The IGVC 2023 platform and the MathWorks Minidrone | Project showcase (3 scroll scenes) |
+| 3 | Wire the Ashwini or Avni CAD model into the hero | Hero 3D rover, which is currently generic |
 | 4 | Optional: the vehicle split into sub-assemblies (chassis, drivetrain, sensor mast, electronics box) | The hero "Explode" view |
 
 **Format and export checklist**
@@ -93,7 +93,7 @@ Please give us **one** correct phone number, **one** workshop address, the offic
 
 ## 10. Decisions we need
 
-1. Show the real Avni model in the Avni vehicle page (replacing the cube)? Recommended once item 1 is supplied.
+1. Wire a complete vehicle model into the hero's 3D rover?
 2. Keep the blog post pages (an addition beyond the design file, needed to read the existing posts)?
 3. Keep the roster carousel the design file contains but never switches on? (We left it out.)
 4. ~~Show social links on member cards?~~ Done. Cards now show LinkedIn / GitHub / Instagram icons from the existing data. Anyone with a missing icon has no link in the old data, so please send the missing ones.

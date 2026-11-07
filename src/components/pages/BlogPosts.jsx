@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { BLOGS } from '../../data/blogs';
+import { glide } from '../../lib/motion';
 import '../blog/Blog.css';
 
 const base = process.env.PUBLIC_URL || '';
@@ -84,7 +85,7 @@ function Article({ post, prev, next }) {
       setTimeout(() => setCopied(false), 1800);
     } catch (e) { /* share cancelled */ }
   };
-  const jump = (id) => (e) => { e.preventDefault(); document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+  const jump = (id) => (e) => { e.preventDefault(); const target=document.getElementById(id); if(target)glide(target); };
 
   return (
     <section id={`blog-${post.slug}`} className="site-page solo bp" ref={wrap}>
@@ -111,7 +112,7 @@ function Article({ post, prev, next }) {
         <a href={`#/blogs/${prev.slug}`}><span className="mono">← Previous</span><b>{prev.title}</b></a>
         <a href={`#/blogs/${next.slug}`} className="r"><span className="mono">Next →</span><b>{next.title}</b></a>
       </div>
-      <button type="button" className="bp-top mono" ref={top} aria-label="Back to top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>↑</button>
+      <button type="button" className="bp-top mono" ref={top} aria-label="Back to top" onClick={() => glide(0)}>↑</button>
     </section>
   );
 }

@@ -19,7 +19,7 @@ function showBotModel(container,botName,{compact=false}={}){
   container.dataset.modelState='loading';
   container.innerHTML=`<div class="model-status" role="status">Loading ${botName} CAD model…</div>`;
 
-  let renderer,frame,resizeObserver,disposed=false,model,grid,cleanup;
+  let renderer,frame,resizeObserver,disposed=false,model,rotationPivot,grid,cleanup;
   const sourceMaterials=new Set();
   const scene=new THREE.Scene();
   if(!compact)scene.background=new THREE.Color(0x171112);
@@ -110,10 +110,14 @@ function showBotModel(container,botName,{compact=false}={}){
         cleanup();
         return;
       }
-      const scale=2.4/largestDimension;
+      const framingScale=botName==='Ashwini'?(compact?0.6:0.9):1;
+      const scale=2.4/largestDimension*framingScale;
       model.scale.setScalar(scale);
       model.position.copy(center).multiplyScalar(-scale);
       if(grid)grid.position.y=(bounds.min.y-center.y)*scale-.015;
+      rotationPivot=new THREE.Group();
+      rotationPivot.add(model);
+      scene.add(rotationPivot);
       model.traverse(node=>{
         if(!node.isMesh)return;
         const partBounds=new THREE.Box3().setFromObject(node);
@@ -136,13 +140,12 @@ function showBotModel(container,botName,{compact=false}={}){
         node.add(outline);
         outlines.push(outline);
       });
-      scene.add(model);
       container.dataset.modelState='loaded';
       container.dataset.modelLabel=`${botName} · 3D CAD model`;
       container.querySelector('.model-status')?.remove();
       const draw=()=>{
         if(disposed)return;
-        model.rotation.y+=.003;
+        rotationPivot.rotation.y+=.003;
         renderer.render(scene,camera);
         frame=requestAnimationFrame(draw);
       };
@@ -194,9 +197,10 @@ let pos=2.4,target=0,sel=-1,raf=0,drag=null,suppress=false,started=false,lock=0,
 const mod=k=>((k%N)+N)%N;
 const near=i=>{let d=mod(i-mod(Math.round(target)));if(d>N/2)d-=N;return d};
 function fill(i){const b=BOTS[i];previewModelCleanup?.();previewModelCleanup=undefined;info.innerHTML=String(i+1).padStart(2,'0')+' / '+String(N).padStart(2,'0')+'<span class="rhint"> · drag, click or ↑↓ to roll</span>';
- const preview=b.n==='Avni'?'<div class="bph model-preview" aria-label="Avni 3D model preview"></div>':`<div class="bph">${cubePreview()}</div>`;
+ const hasModel=b.n==='Avni'||b.n==='Ashwini';
+ const preview=hasModel?`<div class="bph model-preview" aria-label="${b.n} 3D model preview"></div>`:`<div class="bph">${cubePreview()}</div>`;
  side.innerHTML=`${preview}<div class="rs-body"><span class="mono">UGV platform · ${b.y}</span><h3>${b.n}</h3><div class="specs">${specRows(b.s)}</div><a class="btn p" href="#/bot/${i+1}">Open ${b.n} ↗</a></div>`;
- if(b.n==='Avni')previewModelCleanup=showBotModel(side.querySelector('.model-preview'),b.n,{compact:true})}
+ if(hasModel)previewModelCleanup=showBotModel(side.querySelector('.model-preview'),b.n,{compact:true})}
 function render(){
  rows.forEach((el,i)=>{const a=wrap((pos-i)*STEP);
   if(Math.abs(a)>80){el.style.visibility='hidden';el.classList.remove('on');return}

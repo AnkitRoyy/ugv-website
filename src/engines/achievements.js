@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { glide } from '../lib/motion';
 
 export default function achievements() {
   if (window.__eng_achievements) return;
@@ -14,7 +15,7 @@ function apply(){let n=0;
  const total=rows.filter(r=>!r.hidden).length;more.hidden=total<=LIM;more.classList.toggle('open',open);more.setAttribute('aria-expanded',open);
  more.querySelector('span').textContent=open?'Show less':'Show more ('+(total-LIM)+')'}
 btns.forEach(b=>b.addEventListener('click',()=>{f=b.dataset.f;btns.forEach(x=>x.classList.toggle('on',x===b));rows.forEach(r=>r._v=0);k=0;apply()}));
-more.addEventListener('click',()=>{open=!open;k=0;apply();if(!open){const t=document.querySelector('.ach-filter').getBoundingClientRect().top;if(t<80)scrollTo({top:scrollY+t-110,behavior:'smooth'})}});
+more.addEventListener('click',()=>{open=!open;k=0;apply();if(!open){const t=document.querySelector('.ach-filter').getBoundingClientRect().top;if(t<80)glide(Math.max(0,scrollY+t-110))}});
 apply();
 })();
 }

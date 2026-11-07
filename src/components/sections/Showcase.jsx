@@ -1,13 +1,12 @@
-import { cancelGlide } from '../../lib/motion';
+import { glide } from '../../lib/motion';
 
 export default function Showcase() {
   function skipProjects(event) {
     event.preventDefault();
-    cancelGlide();
     const fleet = document.getElementById('fleet');
     if (!fleet) return;
     window.history.replaceState(window.history.state, '', '#/fleet');
-    window.scrollTo(0, Math.max(0, fleet.getBoundingClientRect().top + window.scrollY - 76));
+    glide(fleet);
   }
 
   return (
