@@ -1,35 +1,68 @@
-import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import './styles/base.css';
+import './styles/sections.css';
+import './styles/pages.css';
+import './styles/extras.css';
+import './styles/polish.css';
+import './styles/typography.css';
 
+import useTheme from './hooks/useTheme';
+import useSiteEngines from './hooks/useSiteEngines';
+import useScrollReveal from './hooks/useScrollReveal';
+import DeptTransition from './components/layout/DeptTransition';
+import BackgroundLayers from './components/layout/BackgroundLayers';
+import Navbar from './components/layout/Navbar';
+import Hero from './components/hero/Hero';
+import Showcase from './components/sections/Showcase';
+import Fleet from './components/sections/Fleet';
+import Council from './components/sections/Council';
+import Teams from './components/sections/Teams';
+import TeamPage from './components/sections/TeamPage';
+import About from './components/pages/About';
+import Ugvc from './components/pages/Ugvc';
+import Isdc from './components/pages/Isdc';
+import Igvc from './components/pages/Igvc';
+import Achievements from './components/pages/Achievements';
+import Research from './components/pages/Research';
+import ResearchArticles from './components/pages/ResearchArticles';
+import Sponsors from './components/pages/Sponsors';
+import Visuals from './components/pages/Visuals';
+import Blogs from './components/pages/Blogs';
+import BlogPosts from './components/pages/BlogPosts';
+import Contact from './components/pages/Contact';
+import BotPage from './components/sections/BotPage';
+import Footer from './components/layout/Footer';
 
-import Navbar from "./components/Navbar";
-
-import Home from "./pages/Home";
-import UGVC from "./pages/UGVC";
-import ISDC from "./pages/ISDC";
-import IGVC from "./pages/IGVC";
-import Blogs from "./pages/Blogs";
-import BlogPost from "./pages/BlogPost";
-import Footer from "./components/Footer";
-import ScrollToTop from "./utils/ScrollToTop";
-
-function App() {
+export default function App() {
+  const [light, toggleTheme] = useTheme();
+  useSiteEngines();
+  useScrollReveal();
   return (
-    <BrowserRouter>
-      <ScrollToTop/>
-
-      <Navbar/>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/ugvc" element={<UGVC />} />
-        <Route path="/isdc" element={<ISDC />} />
-        <Route path="/igvc" element={<IGVC />} />
-        <Route path="/blogs" element={<Blogs />} />
-        <Route path="/blogs/:slug" element={<BlogPost />} />
-      </Routes>
+    <>
+      <DeptTransition />
+      <BackgroundLayers />
+      <Navbar light={light} onToggleTheme={toggleTheme} />
+      <main>
+        <Hero />
+        <About />
+        <Showcase />
+        <Fleet />
+        <Council />
+        <Teams />
+        <Ugvc />
+        <Isdc />
+        <Igvc />
+        <Achievements />
+        <Research />
+        <Sponsors />
+        <Visuals />
+        <Blogs />
+        <Contact />
+        <ResearchArticles />
+        <BlogPosts />
+      </main>
+      <TeamPage />
+      <BotPage />
       <Footer />
-    </BrowserRouter>
+    </>
   );
 }
-
-export default App;

@@ -1,0 +1,27 @@
+/* motion polish: shared easing, reveal-on-scroll, page entry, press feedback, theme transition */
+:root{--ease:cubic-bezier(.2,.7,.2,1)}
+
+/* theme switch: circular reveal (View Transitions API). Fallback is the colour fade in pages.css */
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+::view-transition-old(root){z-index:1}
+::view-transition-new(root){z-index:2147483646}
+
+/* reveal on scroll (classes are added by useScrollReveal, so nothing hides without JS) */
+html.rv-on [data-rv]:not(.rv-in){opacity:0;transform:translateY(26px)}
+html.rv-on [data-rv].rv-in{animation:rvIn .85s var(--ease) backwards;animation-delay:var(--rvd,0ms)}
+@keyframes rvIn{from{opacity:0;transform:translateY(26px)}}
+
+/* subpages ease in when opened from the nav */
+body.pg main>.site-page.solo.active{animation:pageIn .6s var(--ease) backwards}
+@keyframes pageIn{from{opacity:0;transform:translateY(18px)}}
+
+/* consistent easing and press feedback on controls */
+.btn,.page-cta,.rs-btn,.rs-more,.ach-more,.ach-filter button,.mini-switch a,nav a{transition:transform .35s var(--ease),background-color .3s ease,border-color .3s ease,box-shadow .35s ease,color .3s ease,opacity .3s ease}
+.btn:active,.page-cta:active,.rs-btn:active,.ach-filter button:active{transform:scale(.97)}
+.card{transition:transform .25s var(--ease),border-color .3s,box-shadow .4s}
+.ach-row{transition:background-color .25s ease}
+
+@media(prefers-reduced-motion:reduce){
+  html.rv-on [data-rv]:not(.rv-in){opacity:1;transform:none}
+  html.rv-on [data-rv].rv-in,body.pg main>.site-page.solo.active,.bl-card{animation:none}
+}
